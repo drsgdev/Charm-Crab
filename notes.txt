@@ -1,0 +1,54 @@
+----Wayward Compass:             Cost -> 0
+----Gathering Swarm:             Cost -> 0
+----Stalwart Shell:
+----Soul Catcher:                
+----Shaman Stone:              Massively increase damage, but add a cooldown +cost
+Soul EAter:                Creates explosive bleed effect
+----Dash Master:                 Make shade cloak have no cooldown also
+----Sprintmaster:               Cost -> 0
+----Grubsong:                    
+----Grubberfly's elegy:          
+----Fragile Heart:               
+----Fragile Strength:            
+----Fragile Greed:               
+----Spell Twister:               Spells Cost No Soul, do less damage
+--- Steady Body:                 Reduce damage taken by 1, to a minimum of 1.
+----Heavy Blow:                  Melee attacks bleed
+----Quick Slash:
+----Long Nail:
+----Mark of Pride:               Increase damage as you attck; Lose it when taking damage
+----Fury of the Fallen:          Works for all health values, but scales.
+----Thorns of Agony:             Shriek -> Thorns 
+----Baldur Shell:                No Longer breaks
+Fluke Nest:                  Lower Damage, poisons enemy
+Defender's Crest:            Increase extra damage effects
+----Glowing Womb:                Shriek Summons 10 womb flies
+----Quick Focus:
+----Deep Focus:
+----Lifeblood Heart:
+----Lifeblood Core:              
+Joni's Blessing:             Every 20 nailstrikes generates a lifeblood
+----Hiveblood:                   
+----Spore Shroom:                passive generates clouds
+----Sharp Shadow:                Reduce damage, generate soul when dealing damage, allow effects like bleed to proc.
+----Shape of Unn:                Cost -> 0
+----NMG:                         Increase Art damage also
+Weaversong:                  Make effects work (e.g. bleed)
+----Dream Wielder:
+Dreamshield:                 Increase Shield count for nail upgrade lvl
+----Grimm Child:                 Increase Damage, and revamp scaling
+Carefree Melody:             Convert to support minion
+----Kingsoul:                    Make this effect persist through Void Heart
+----Void Heart: 
+
+-------------------- New Charms -------------------------------
+
+- 
+
+
+
+
+
+----------------- Bugs to fix -------------------------------
+
+Baldur shell vanishes after a hit (low priority)
