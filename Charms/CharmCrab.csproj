@@ -53,6 +53,9 @@
     <Reference Include="UnityEngine.UI">
       <HintPath>D:\Programs\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\UnityEngine.UI.dll</HintPath>
     </Reference>
+    <Reference Include="Vasi">
+      <HintPath>..\..\..\..\Programs\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\Mods\Vasi\Vasi.dll</HintPath>
+    </Reference>
 	<EmbeddedResource Include="D:\Documents\Programming\HK-Mage\Resources\assets" />
   </ItemGroup>
 
