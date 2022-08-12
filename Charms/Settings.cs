@@ -4,25 +4,14 @@ using System.Text;
 
 namespace CharmCrab {
     public class Settings {
-        private bool hasRadOrb = false;
-        private bool hasVoidTends = false;
+        public Dictionary<CharmsNew, CharmObtainData> CharmObtained = new Dictionary<CharmsNew, CharmObtainData>() {
+            { CharmsNew.VoidTendrils, new CharmObtainData() },
+        };
 
-        public bool HasRadOrb {
-            get {
-                return this.hasRadOrb;
-            }
-            set {
-                this.hasRadOrb = value;
-			}
-        }
-
-        public bool HasVoidTends {
-            get {
-                return this.hasVoidTends;
-            }
-            set {
-                this.hasVoidTends = value;
-            }
-        }
+        public class CharmObtainData {
+            public bool Obtained = true;
+            public bool New = false;
+            public bool Equipped = false;
+	    }
     }
 }

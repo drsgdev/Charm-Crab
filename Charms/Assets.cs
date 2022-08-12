@@ -6,20 +6,17 @@ using System.IO;
 using UnityEngine;
 using System.Reflection;
 
-namespace CharmCrab.Spells
+namespace CharmCrab
 {
     class Assets {
 
-		public static GameObject TendrilsPrefab;
-		public static GameObject HorrorPrefab;
-		public static GameObject RadiantOrbPrefab;
-		public static GameObject SpellMenuPrefab;
-		public static GameObject EnemyDetect;
+		public GameObject TendrilsPrefab;
+		public GameObject HorrorPrefab;
+		public GameObject RadiantOrbPrefab;
 
-		private static AssetBundle ab;
+		private AssetBundle ab;
 
-		public static void Init()
-		{
+		public Assets()	{
 			string bundleN = "assets";
 			Assembly asm = Assembly.GetExecutingAssembly();
 
@@ -33,22 +30,28 @@ namespace CharmCrab.Spells
 					s.Dispose();
 					string bundleName = Path.GetExtension(res).Substring(1);
 					if (bundleName != bundleN) continue;
-					ab = AssetBundle.LoadFromMemory(buffer); // Store this somewhere you can access again.
+					this.ab = AssetBundle.LoadFromMemory(buffer); // Store this somewhere you can access again.
 				}
 			}
 
-			SpellMenuPrefab = ab.LoadAsset<GameObject>("Spell Menu");
-			GetSpells(ab);
+			GetCharms();
+			GetSpells();
 		}
 
-		private static void GetSpells(AssetBundle ab)
-		{
+		private void GetCharms() {
+			foreach (var item in CharmCrab.NewCharms) {
+				item.Value.Sprite = ab.LoadAsset<Sprite>(item.Value.SpriteName);
+				Log(item.Value.Sprite.ToString());
+			}
+		}
+
+		private void GetSpells() {
 			var v1 = GameManager.instance.gameSettings.masterVolume / 10.0f;
 			var v2 = GameManager.instance.gameSettings.soundVolume / 10.0f;
 			var v3 = v1 * v2;
 
 			/// Void Tendrils Loading
-			TendrilsPrefab = ab.LoadAsset<GameObject>("Tendril Spell");
+			TendrilsPrefab = this.ab.LoadAsset<GameObject>("Tendril Spell");
 			TendrilsPrefab.transform.GetChild(0).GetComponent<SpriteRenderer>().material = new Material(Shader.Find("Sprites/Default"));
 			TendrilsPrefab.transform.GetChild(1).GetComponent<SpriteRenderer>().material = new Material(Shader.Find("Sprites/Default"));
 			TendrilsPrefab.transform.GetChild(0).gameObject.AddComponent<Spells.TendrilSpellController>();
@@ -59,21 +62,18 @@ namespace CharmCrab.Spells
 			}
 
 			/// Horror Loading
-			HorrorPrefab = ab.LoadAsset<GameObject>("VoidHorror Spell");
-			HorrorPrefab.GetComponent<SpriteRenderer>().material = new Material(Shader.Find("Sprites/Default"));
-			HorrorPrefab.AddComponent<Spells.HorrorSpellController>();
-			HorrorPrefab.GetComponent<AudioSource>().volume = v3;
+			//HorrorPrefab = ab.LoadAsset<GameObject>("VoidHorror Spell");
+			//HorrorPrefab.GetComponent<SpriteRenderer>().material = new Material(Shader.Find("Sprites/Default"));
+			//HorrorPrefab.AddComponent<Spells.HorrorSpellController>();
+			//HorrorPrefab.GetComponent<AudioSource>().volume = v3;
 
 			/// Radiant Orb Loading
 			RadiantOrbPrefab = ab.LoadAsset<GameObject>("Radiant Orb Spell");
 			RadiantOrbPrefab.GetComponent<SpriteRenderer>().material = new Material(Shader.Find("Sprites/Default"));
 			RadiantOrbPrefab.AddComponent<Spells.RadiantOrbController>();
-			foreach (var a in RadiantOrbPrefab.GetComponents<AudioSource>())
-			{
+			foreach (var a in RadiantOrbPrefab.GetComponents<AudioSource>()) {
 				a.volume = v3;
 			}
-
-			EnemyDetect = ab.LoadAsset<GameObject>("Detect Enemy");
 		}
 
 

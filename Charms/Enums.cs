@@ -56,18 +56,8 @@ namespace CharmCrab {
 		CarefreeMelody
 	}
 
-	public enum SpellsNew {
-		Fireball,
-		Dive,
-		Shriek,
-		VoidHorror,
-		VoidTendrils,
-		Thorns,
-		GreatSlash,
-		DashSlash,
-		CycloneSlash,
-		RadiantOrb,
-		Womb,
+	public enum CharmsNew {
+		VoidTendrils
 	}
 
 	public enum DamageType {
