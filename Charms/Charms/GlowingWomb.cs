@@ -6,42 +6,33 @@ using Modding;
 using HutongGames;
 using HutongGames.PlayMaker.Actions;
 using HutongGames.PlayMaker;
-using CharmCrab.Utils;
+using Vasi;
 
 namespace CharmCrab.Charms {
-	class GlowingWomb : Spell {
-		private static GameObject CharmEffectsVanilla;
-		private GameObject babyPrefab;
+	class GlowingWomb{
+		public readonly float HATCH_TIME_NULL = 600;
+		public readonly float HATCH_TIME_MAX = 60;
+		public readonly float HATCH_TIME_MIN = 1;
+
+		public readonly int SPAWN_MAX = 15;
+		public readonly int SPAWN_MIN = 5;
+		public readonly int SPAWN_NULL = 1;
+
+		private GameObject CharmEffectsVanilla;
+		private PlayMakerFSM fsm;
 
 		public GlowingWomb() {
 			if (CharmEffectsVanilla == null) {
 				CharmEffectsVanilla = HeroController.instance.gameObject.transform.Find("Charm Effects").gameObject;
 			}
-			this.babyPrefab = Functions.GetAction<SpawnObjectFromGlobalPool>(
-				FSMUtility.LocateFSM(CharmEffectsVanilla, "Hatchling Spawn"), 
-				"Hatch", 
-				2)
-			.gameObject.Value;
+			this.fsm = FSMUtility.LocateFSM(CharmEffectsVanilla, "Hatchling Spawn");
+			this.fsm.FsmVariables.FindFsmInt("Soul Cost").RawValue = 15;
+			this.fsm.FsmVariables.FindFsmInt("Hatchling Max").RawValue = 15;
+			this.fsm.FsmVariables.FindFsmFloat("Hatch Time").Value = 1f;
 		}
 
-		private int SpawnCount() {
-			if (PlayerData.instance.GetBool("equippedCharm_19")) {
-				return 15;
-			}
-			if (PlayerData.instance.GetBool("equippedCharm_33")) {
-				return 1;
-			}		
+		public void Update() {
 
-			return 4;
-		}
-
-		public GameObject Spawn() {
-			for (int i = 0; i < SpawnCount(); ++i) {
-				var baby = GameObject.Instantiate(this.babyPrefab);
-				baby.transform.position = HeroController.instance.gameObject.transform.position;
-			}
-			
-			return babyPrefab;
 		}
 	}
 }

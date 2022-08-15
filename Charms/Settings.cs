@@ -4,12 +4,14 @@ using System.Text;
 
 namespace CharmCrab {
     public class Settings {
-        public Dictionary<CharmsNew, CharmObtainData> CharmObtained = new Dictionary<CharmsNew, CharmObtainData>() {
-            { CharmsNew.VoidTendrils, new CharmObtainData() },
+        public Dictionary<NewCharms, CharmObtainData> CharmObtained = new Dictionary<NewCharms, CharmObtainData>() {
+            { NewCharms.VoidTendrils, new CharmObtainData() },
+            { NewCharms.ShadeAura, new CharmObtainData() },
+            { NewCharms.SoulInfusedBlade, new CharmObtainData() },
         };
 
         public class CharmObtainData {
-            public bool Obtained = true;
+            public bool Obtained = false;
             public bool New = false;
             public bool Equipped = false;
 	    }

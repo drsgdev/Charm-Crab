@@ -11,12 +11,16 @@ namespace CharmCrab.Spells {
 	class TendrilSpellController: MonoBehaviour {
 		// The objects we need to regularly apply damage to.
 		private readonly HashSet<HealthManager> attacking = new HashSet<HealthManager>();
+		private Functions.HitDetectManager hit;
 		// Animator to keep track of.
 		private Animator anim;
+
 		public void Start() {
 			this.anim = this.GetComponent<Animator>();
+			this.hit = new Functions.HitDetectManager(0.15f);
 		}
-		public void Update() {
+		public void Update() {		
+
 			var v1 = GameManager.instance.gameSettings.masterVolume / 10.0f;
 			var v2 = GameManager.instance.gameSettings.soundVolume / 10.0f;
 			var v3 = v1 * v2;
@@ -32,6 +36,7 @@ namespace CharmCrab.Spells {
 					}
 					this.ApplyDamage();
 				}
+				this.hit.Update();
 			} else { 
 				Destroy(this.transform.parent.gameObject);
 				Destroy(this);
@@ -45,9 +50,22 @@ namespace CharmCrab.Spells {
 
 		private void ApplyDamage() {
 			foreach (var hm in this.attacking) {
-				var hit = this.GenHit();				
-				hm.Hit(hit);
-				FSMUtility.SendEventToGameObject(hm.gameObject, "TAKE DAMAGE", false);
+				if (!this.hit.Hit(hm.gameObject)) {
+					var hit = this.GenHit();
+					hm.Hit(hit);
+					FSMUtility.SendEventToGameObject(hm.gameObject, "TAKE DAMAGE", false);
+
+					var d = hm.gameObject.GetComponent<Charms.Debuffs>();
+
+					if (d) {
+						d.StackBleed();
+						d.SoulEat();
+						d.SoulCatch(hit.DamageDealt);
+					}
+
+					this.hit.Register(hm.gameObject);
+				}
+				
 			}
 		}
 
@@ -57,6 +75,7 @@ namespace CharmCrab.Spells {
 
 			if (hm) {
 				this.attacking.Add(hm);
+				
 			}			
 		}
 

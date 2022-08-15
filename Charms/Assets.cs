@@ -11,7 +11,7 @@ namespace CharmCrab
     class Assets {
 
 		public GameObject TendrilsPrefab;
-		public GameObject HorrorPrefab;
+		//public GameObject HorrorPrefab;
 		public GameObject RadiantOrbPrefab;
 
 		private AssetBundle ab;
@@ -41,7 +41,6 @@ namespace CharmCrab
 		private void GetCharms() {
 			foreach (var item in CharmCrab.NewCharms) {
 				item.Value.Sprite = ab.LoadAsset<Sprite>(item.Value.SpriteName);
-				Log(item.Value.Sprite.ToString());
 			}
 		}
 

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 
 namespace CharmCrab {
-	public enum CharmsVanilla {
+	public enum Charm {
 		GatheringSwarm,
 		WaywardCompass,
 		GrubSong,
@@ -56,8 +56,11 @@ namespace CharmCrab {
 		CarefreeMelody
 	}
 
-	public enum CharmsNew {
-		VoidTendrils
+	public enum NewCharms {
+		VoidTendrils,
+		ShadeAura,
+		SoulInfusedBlade,
+		AfflictedDevourer,
 	}
 
 	public enum DamageType {
@@ -67,10 +70,12 @@ namespace CharmCrab {
 		DashSlash,
 		FireBall,
 		Dive,
+		DiveExtra,
 		Thorns,
 		Shriek,
 		VoidTendrils,
 		VoidHorror,
-		SharpShadow
+		SharpShadow,
+		Flukes,
 	}
 }

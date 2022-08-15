@@ -14,8 +14,8 @@ namespace CharmCrab.Spells {
 		private readonly float LifeTime = 15;
 		// Cooldown of amount of times it can do damage when multi-hitting.
 		private readonly float Cooldown = 1;
-		private readonly float rotation = 0.4f;
-		private readonly float speed = 1f;
+		//private readonly float rotation = 0.4f;
+		//private readonly float speed = 1f;
 
 		// Animator to keep track of.
 		private Animator anim;

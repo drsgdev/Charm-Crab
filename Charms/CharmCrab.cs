@@ -17,15 +17,15 @@ using SFCore;
 
 namespace CharmCrab {
 
-	class CharmCrab: Mod, ILocalSettings<Settings> {
+	class CharmCrab : Mod, ILocalSettings<Settings> {
 
-		public static Dictionary<int, CharmData> NewCharms = new Dictionary<int, CharmData>() {
-			{0, new CharmData() { 
-					Name = "Void Horror", 
-					Cost = 1, 
+		public static Dictionary<int, NewCharmData> NewCharms = new Dictionary<int, NewCharmData>() {
+			{0, new NewCharmData() {
+					Name = "Void Horror",
+					Cost = 1,
 					Desc = "Changes your Shriek Spell to Summon Void Tendrils.",
 					SpriteName = "Void Horror Icon",
-					EnumValue = CharmsNew.VoidTendrils,
+					EnumValue = global::CharmCrab.NewCharms.VoidTendrils,
 				}
 			},
 		};
@@ -43,7 +43,6 @@ namespace CharmCrab {
 
 		public override void Initialize() {
 			Assets = new Assets();
-
 
 			base.Initialize();
 			this.InitHooks();
@@ -68,21 +67,49 @@ namespace CharmCrab {
 
 		private void InitHooks() {
 
-			ModHooks.HeroUpdateHook     += AddBehaviour;
-			ModHooks.HitInstanceHook    += HitInstanceCreated;
-			ModHooks.TakeDamageHook     += DamageTaken;
-			ModHooks.OnEnableEnemyHook  += OnEnemyEnable;
-			ModHooks.GetPlayerBoolHook  += OnGetPlayerBoolHook;
-			ModHooks.SetPlayerBoolHook  += OnSetPlayerBoolHook;
-			ModHooks.GetPlayerIntHook   += OnGetPlayerIntHook;
-			ModHooks.SetPlayerIntHook   += OnSetPlayerIntHook;
-			ModHooks.LanguageGetHook    += OnLanguageGetHook;
-			ModHooks.GetPlayerBoolHook  += OnGetPlayerBoolHook;
-			ModHooks.SetPlayerBoolHook  += OnSetPlayerBoolHook;
-			ModHooks.GetPlayerIntHook   += OnGetPlayerIntHook;
-			ModHooks.SetPlayerIntHook   += OnSetPlayerIntHook;
+			ModHooks.HeroUpdateHook += AddBehaviour;
+			ModHooks.HitInstanceHook += (HutongGames.PlayMaker.Fsm owner, HitInstance hitInst) => { return charmEffects.DamageRecalc(owner, hitInst); };
+			ModHooks.OnEnableEnemyHook += OnEnemyEnable;
+			ModHooks.GetPlayerBoolHook += OnGetPlayerBoolHook;
+			ModHooks.SetPlayerBoolHook += OnSetPlayerBoolHook;
+			ModHooks.GetPlayerIntHook += OnGetPlayerIntHook;
+			ModHooks.SetPlayerIntHook += OnSetPlayerIntHook;
+			ModHooks.LanguageGetHook += OnLanguageGetHook;
+			ModHooks.GetPlayerBoolHook += OnGetPlayerBoolHook;
+			ModHooks.SetPlayerBoolHook += OnSetPlayerBoolHook;
+			ModHooks.GetPlayerIntHook += OnGetPlayerIntHook;
+			ModHooks.SetPlayerIntHook += OnSetPlayerIntHook;
+			ModHooks.SoulGainHook += OnSoulGain;
+			//ModHooks.RecordKillForJournalHook
 
 			UnityEngine.SceneManagement.SceneManager.sceneLoaded += SceneLoaded;
+		}
+
+		public void RecordKillForJournalHandler(EnemyDeathEffects enemyDeathEffects, string playerDataName, string killedBoolPlayerDataLookupKey, string killCountIntPlayerDataLookupKey, string newDataBoolPlayerDataLookupKey) {
+			
+		}
+
+
+		public int OnSoulGain(int num) {
+			// This just undoes what the built-in Soul gain calculations do based off of charms. This is so the soul
+			// gain from Soul Catcher/Eater isn't ridiculous with their new effects. This information comes directly from
+			// the default code in the game.
+			if (PlayerData.instance.GetInt("MPCharge") < PlayerData.instance.GetInt("maxMP")) {
+				if (PlayerData.instance.GetBool("equippedCharm_20")) {
+					num -= 3;
+				}
+				if (PlayerData.instance.GetBool("equippedCharm_21")) {
+					num -= 8;
+				}
+			} else {
+				if (PlayerData.instance.GetBool("equippedCharm_20")) {
+					num -= 2;
+				}
+				if (PlayerData.instance.GetBool("equippedCharm_21")) {
+					num -= 6;
+				}
+			}
+			return num/2;
 		}
 
 		public void OnLoadLocal(Settings s) {
@@ -103,68 +130,46 @@ namespace CharmCrab {
 			return isdead;
         }
 
-		private int DamageTaken(ref int hazard, int dmg) {
-			return dmg;
-		}
-
-
 		public void SceneLoaded(Scene scene, LoadSceneMode mode) {
 			if (scene.name == "Menu_Title") {
+				ModHooks.ObjectPoolSpawnHook -= charmEffects.UpdateSpells;
 				ModHooks.HeroUpdateHook += AddBehaviour;
-			}						
+				charmEffects = null;
+			} else {
+				// Useful on some odd scene transitions it resets some FSM.
+				Spells.SpellUpdater.UpdateSpellCosts();
+			}
+			
 		}
 
-		private T AddIfNeeded<T>() where T: MonoBehaviour {
-			var test = HeroController.instance.gameObject.GetComponent<T>();
+		public int TakeDamage(ref int hazard, int dmg) {
+			return charmEffects.TakeDamage(ref hazard, dmg);
 
-			if (test == null) {
-				return HeroController.instance.gameObject.AddComponent<T>();
-			} else {
-				return test;
-			}
 		}
 
 		private void AddBehaviour() {
-			charmEffects = AddIfNeeded<Charms.CharmEffects>();
+			charmEffects = Functions.AddIfNeeded<Charms.CharmEffects>(HeroController.instance.gameObject);
 
 			ModHooks.SlashHitHook   += charmEffects.SlashHitHandler;			
-			ModHooks.TakeDamageHook += charmEffects.TakeDamage;
+			ModHooks.TakeDamageHook += TakeDamage;
+			ModHooks.ObjectPoolSpawnHook += charmEffects.UpdateSpells;
+			ModHooks.ColliderCreateHook += charmEffects.OnColliderCreate;
+			ModHooks.TakeDamageHook += charmEffects.DamageTaken;
 			Spells.SpellUpdater.Init();
+			Spells.SpellUpdater.UpdateSpellCosts();
 
 			ModHooks.HeroUpdateHook -= AddBehaviour;
 
 			
 		}
 
-		public HitInstance HitInstanceCreated(HutongGames.PlayMaker.Fsm owner, HitInstance hitInst) {
-			if (owner.GameObject.name == "Slash" || owner.GameObject.name == "UpSlash" || owner.GameObject.name == "DownSlash" || owner.GameObject.name == "AltSlash") {
-				hitInst.DamageDealt = charmEffects.ComputeDamage(DamageType.Slash);
-			} else if (owner.GameObject.name == "Great Slash") {
-				hitInst.DamageDealt = charmEffects.ComputeDamage(DamageType.GreatSlash);
-			} else if (owner.GameObject.name == "Hit L" || owner.GameObject.name == "Hit R") {
-				hitInst.DamageDealt = charmEffects.ComputeDamage(DamageType.Cyclone);
-			} else if (owner.GameObject.name == "Fireball(Clone)") {
-				hitInst.DamageDealt = charmEffects.ComputeDamage(DamageType.FireBall);
-			} else if (owner.GameObject.name == "Q Fall Damage") {
-				hitInst.DamageDealt = charmEffects.ComputeDamage(DamageType.Dive);
-			} else if (owner.GameObject.name == "Hit L" || owner.GameObject.name == "Hit R" || owner.GameObject.name == "Hit U" || owner.GameObject.name == "Hit D") {
-				hitInst.DamageDealt = charmEffects.ComputeDamage(DamageType.Shriek);
-			} else if (owner.GameObject.name == "Sharp Shadow") {
-				hitInst.DamageDealt = charmEffects.ComputeDamage(DamageType.SharpShadow);
-			} else {
-				//Log("Hit source name: " + owner.GameObject.name);
-			}
-
-			return hitInst;
-		}
 
 		private bool OnGetPlayerBoolHook(string target, bool orig) {
-
 			if (target.StartsWith("gotCharm_")) {
 				int charmNum = int.Parse(target.Split('_')[1]);
 				if (NewCharms.ContainsKey(charmNum)) {
 					var en = NewCharms[charmNum].EnumValue;
-					return Settings.CharmObtained[en].Obtained;
+					return NewCharmData.Obtained(en) || Settings.CharmObtained[en].Obtained;
 				}
 			}
 			if (target.StartsWith("newCharm_")) {
@@ -176,6 +181,7 @@ namespace CharmCrab {
 			}
 			if (target.StartsWith("equippedCharm_")) {
 				int charmNum = int.Parse(target.Split('_')[1]);
+				
 				if (NewCharms.ContainsKey(charmNum)) {
 					var en = NewCharms[charmNum].EnumValue;
 					return Settings.CharmObtained[en].Equipped;
@@ -186,6 +192,27 @@ namespace CharmCrab {
         }
 
 		private bool OnSetPlayerBoolHook(string target, bool orig) {
+			
+			if (target == "killedAbyssTendril" && orig) {
+				Settings.CharmObtained[global::CharmCrab.NewCharms.VoidTendrils].Obtained = true;
+			}
+
+			if (target == "bigCatShadeConvo" && orig) {
+				Settings.CharmObtained[global::CharmCrab.NewCharms.ShadeAura].Obtained = true;
+			}
+
+			if (target == "givenEmilitiaFlower" && orig) {
+				Settings.CharmObtained[global::CharmCrab.NewCharms.SoulInfusedBlade].Obtained = true;
+			}
+
+			if (target == "midwifeWeaverlingConvo" && orig) {
+				Settings.CharmObtained[global::CharmCrab.NewCharms.AfflictedDevourer].Obtained = true;
+			}
+
+			if (target == "atBench" && !orig) {
+				Spells.SpellUpdater.UpdateSpellCosts();
+			}
+
 			if (target.StartsWith("gotCharm_")) {
 				int charmNum = int.Parse(target.Split('_')[1]);
 				if (NewCharms.ContainsKey(charmNum)) {
@@ -204,10 +231,10 @@ namespace CharmCrab {
 				int charmNum = int.Parse(target.Split('_')[1]);
 				if (NewCharms.ContainsKey(charmNum)) {
 					var en = NewCharms[charmNum].EnumValue;
-					Settings.CharmObtained[en].Equipped = orig;
+					Settings.CharmObtained[en].Equipped = orig;					
 				}
+				Spells.SpellUpdater.UpdateSpellCosts();
 			}
-
 			return orig;
 		}
 
@@ -217,7 +244,10 @@ namespace CharmCrab {
 				if (NewCharms.ContainsKey(charmNum)) {
 					return NewCharms[charmNum].Cost;
 				} else {
-					return CharmCosts.COSTS[charmNum];
+					if (charmNum == 36 && PlayerData.instance.royalCharmState == 4) {
+						return 0;
+					}
+					return CharmData.Cost(CharmData.Index(charmNum));
 				}
 			}
 

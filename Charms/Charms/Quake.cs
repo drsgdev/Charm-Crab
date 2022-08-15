@@ -6,24 +6,51 @@ using UnityEngine;
 
 namespace CharmCrab.Charms {
 	class Quake {
-		public int Damage() {
+
+		public int MiniDamage() {
 			int basedmg = 0;
-			switch (PlayerData.instance.GetInt("nailSmithUpgrades")) {
-				case 0: basedmg = 12; break;
-				case 1: basedmg = 16; break;
-				case 2: basedmg = 21; break;
-				case 3: basedmg = 27; break;
-				case 4: basedmg = 35; break;
-				default: basedmg = 0; break;
-			}
-			
-			// Shaman Stone
-			if (PlayerData.instance.GetBool("equippedCharm_19")) {
-				basedmg *= 4;
+			if (PlayerData.instance.GetInt("quakeLevel") == 1) {
+				switch (PlayerData.instance.GetInt("nailSmithUpgrades")) {
+					case 0: basedmg = 3; break;
+					case 1: basedmg = 4; break;
+					case 2: basedmg = 5; break;
+					case 3: basedmg = 7; break;
+					case 4: basedmg = 9; break;
+					default: basedmg = 0; break;
+				}
+			} else if (PlayerData.instance.GetInt("quakeLevel") == 2) {
+				switch (PlayerData.instance.GetInt("nailSmithUpgrades")) {
+					case 0: basedmg = 6; break;
+					case 1: basedmg = 8; break;
+					case 2: basedmg = 10; break;
+					case 3: basedmg = 14; break;
+					case 4: basedmg = 18; break;
+					default: basedmg = 0; break;
+				}
 			}
 
-			if (PlayerData.instance.GetBool("equippedCharm_33")) {
-				basedmg /= 2;
+			return basedmg;
+		}
+		public int Damage() {
+			int basedmg = 0; 
+			if (PlayerData.instance.GetInt("quakeLevel") == 1) {
+				switch (PlayerData.instance.GetInt("nailSmithUpgrades")) {
+					case 0: basedmg = 6; break;
+					case 1: basedmg = 8; break;
+					case 2: basedmg = 10; break;
+					case 3: basedmg = 14; break;
+					case 4: basedmg = 18; break;
+					default: basedmg = 0; break;
+				}
+			} else if (PlayerData.instance.GetInt("quakeLevel") == 2) {
+				switch (PlayerData.instance.GetInt("nailSmithUpgrades")) {
+					case 0: basedmg = 12; break;
+					case 1: basedmg = 16; break;
+					case 2: basedmg = 21; break;
+					case 3: basedmg = 27; break;
+					case 4: basedmg = 35; break;
+					default: basedmg = 0; break;
+				}
 			}
 
 			return basedmg;

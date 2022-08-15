@@ -2,10 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
-using CharmCrab.Utils;
+using Vasi;
 
 namespace CharmCrab.Charms {
 	class Kingsoul {
+		public readonly int SoulCharge = 1;
+		public readonly int VoidCharge = 2;
 		public readonly float TickTime = 4;
 		private PlayMakerFSM fsm;
 		private float time = 0;
@@ -14,15 +16,15 @@ namespace CharmCrab.Charms {
 			if (this.fsm == null) {
 				var effects = HeroController.instance.gameObject.transform.Find("Charm Effects").gameObject;
 				this.fsm = FSMUtility.LocateFSM(effects, "White Charm");
-				Functions.RemoveTransition(this.fsm, "Check", "Wait");
+				FsmUtil.RemoveTransition(FsmUtil.GetState(this.fsm, "Check"), "Active");
 			} else {
 				if (PlayerData.instance.GetBool("equippedCharm_36")) {
 					if (this.time >= TickTime) {
 						this.time = 0;
 						if (PlayerData.instance.gotShadeCharm) {
-							HeroController.instance.AddMPCharge(4);
+							HeroController.instance.AddMPCharge(VoidCharge);
 						} else {
-							HeroController.instance.AddMPCharge(2);
+							HeroController.instance.AddMPCharge(SoulCharge);
 						}
 					} else {
 
