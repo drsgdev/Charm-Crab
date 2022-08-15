@@ -84,13 +84,13 @@ namespace CharmCrab.Charms {
 			if (PlayerData.instance.nailSmithUpgrades == 0) {
 				baseDMG = 15;
 			} else if (PlayerData.instance.nailSmithUpgrades == 1) {
-				baseDMG = 25;
+				baseDMG = 22;
 			} else if (PlayerData.instance.nailSmithUpgrades == 2) {
-				baseDMG = 32;
+				baseDMG = 29;
 			} else if (PlayerData.instance.nailSmithUpgrades == 3) {
-				baseDMG = 38;
+				baseDMG = 36;
 			} else if (PlayerData.instance.nailSmithUpgrades == 4) {
-				baseDMG = 45;
+				baseDMG = 42;
 			}
 
 			baseDMG += this.pride.DmgBonus;

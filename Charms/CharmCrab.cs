@@ -18,6 +18,7 @@ using SFCore;
 namespace CharmCrab {
 
 	class CharmCrab : Mod, ILocalSettings<Settings> {
+		public readonly int HealthScaleFactor = 5;
 
 		public static Dictionary<int, NewCharmData> NewCharms = new Dictionary<int, NewCharmData>() {
 			{0, new NewCharmData() {
@@ -124,7 +125,7 @@ namespace CharmCrab {
 			var hm = obj.GetComponent<HealthManager>();
 
 			if (hm) {
-				hm.hp *= 4;
+				hm.hp *= HealthScaleFactor;
 			}			
 
 			return isdead;
@@ -150,7 +151,7 @@ namespace CharmCrab {
 		private void AddBehaviour() {
 			charmEffects = Functions.AddIfNeeded<Charms.CharmEffects>(HeroController.instance.gameObject);
 
-			ModHooks.SlashHitHook   += charmEffects.SlashHitHandler;			
+			ModHooks.SlashHitHook   += charmEffects.SlashHitHandler;	
 			ModHooks.TakeDamageHook += TakeDamage;
 			ModHooks.ObjectPoolSpawnHook += charmEffects.UpdateSpells;
 			ModHooks.ColliderCreateHook += charmEffects.OnColliderCreate;
