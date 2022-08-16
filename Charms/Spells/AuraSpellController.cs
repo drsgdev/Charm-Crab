@@ -1,51 +1,54 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using UnityEngine;
 
-
 namespace CharmCrab.Spells {
-	
+	class AuraSpellController: MonoBehaviour {
+		public static AuraSpellController instance;
 
-	class TendrilSpellController: MonoBehaviour {
+		public static float RecentSoulUse = 0;
+		public readonly float MAX_LIFE = 60;
 		// The objects we need to regularly apply damage to.
 		private readonly HashSet<HealthManager> attacking = new HashSet<HealthManager>();
 		private Functions.HitDetectManager hit;
 		// Animator to keep track of.
 		private Animator anim;
 
-		public void Start() {
-			this.anim = this.GetComponent<Animator>();
-			this.hit = new Functions.HitDetectManager(0.15f);
-		}
-		public void Update() {		
+		private float duration;
+		private float lifetime;
 
-			var v1 = GameManager.instance.gameSettings.masterVolume / 10.0f;
-			var v2 = GameManager.instance.gameSettings.soundVolume / 10.0f;
-			var v3 = v1 * v2;
+		public void Start() {
+			instance = this;
+			this.duration = 0;
+			this.lifetime = RecentSoulUse / 99 * MAX_LIFE;
+
+			if (CharmData.Equipped(Charm.SpellTwister)) {
+				this.lifetime *= 2;
+			}
+
+			this.anim = this.GetComponent<Animator>();
+			this.hit = new Functions.HitDetectManager(1f);
+			//this.transform.parent = HeroController.instance.gameObject.transform;
+		}
+		public void Update() {
+			this.transform.position = HeroController.instance.gameObject.transform.position - 0.5f * Vector3.up;
+			this.duration += Time.deltaTime;
+			//var v3 = v1 * v2;
 			if (this.IsActive()) {
-				if (GameManager.instance.isPaused) {
-					foreach (var a in this.GetComponents<AudioSource>()) {
-						a.Pause();
-					}
-				} else {
-					foreach (var a in this.GetComponents<AudioSource>()) {
-						a.UnPause();
-						a.volume = v3;
-					}
+				if (!GameManager.instance.isPaused) {
 					this.ApplyDamage();
-				}
-				this.hit.Update();
-			} else { 
-				Destroy(this.transform.parent.gameObject);
+					this.hit.Update();
+				}				
+			} else {
+				//Destroy(this.transform.parent.gameObject);
 				Destroy(this.gameObject);
 			}
 		}
 
 
-		private bool IsActive() {
-			return !(this.anim.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1 && !anim.IsInTransition(0));
+		public bool IsActive() {
+			return this.duration < this.lifetime;
 		}
 
 		private void ApplyDamage() {
@@ -58,14 +61,12 @@ namespace CharmCrab.Spells {
 					var d = hm.gameObject.GetComponent<Charms.Debuffs>();
 
 					if (d) {
-						d.StackBleed();
-						d.SoulEat();
 						d.SoulCatch(hit.DamageDealt);
 					}
 
 					this.hit.Register(hm.gameObject);
 				}
-				
+
 			}
 		}
 
@@ -75,8 +76,7 @@ namespace CharmCrab.Spells {
 
 			if (hm) {
 				this.attacking.Add(hm);
-				
-			}			
+			}
 		}
 
 		public void OnTriggerExit2D(Collider2D col) {
@@ -85,22 +85,24 @@ namespace CharmCrab.Spells {
 
 			if (hm) {
 				this.attacking.Remove(hm);
-			}			
+			}
 		}
 
-		
+
 
 		private HitInstance GenHit() {
 			int basedmg;
 			switch (PlayerData.instance.nailSmithUpgrades) {
-				case 0: basedmg = 1; break;
-				case 1: basedmg = 2; break;
-				case 2: basedmg = 3; break;
-				case 4: basedmg = 7; break;
+				case 0: basedmg = 5; break;
+				case 1: basedmg = 10; break;
+				case 2: basedmg = 25; break;
+				case 4: basedmg = 20; break;
 				default: basedmg = 0; break;
 			}
 
-			basedmg = Charms.CharmEffects.HandleCharmedSpells(basedmg);
+			if (CharmData.Equipped(Charm.ShamanStone)) {
+				basedmg *= 2;
+			}
 
 			var hit = new HitInstance() {
 				DamageDealt = basedmg,
@@ -114,3 +116,4 @@ namespace CharmCrab.Spells {
 		}
 	}
 }
+

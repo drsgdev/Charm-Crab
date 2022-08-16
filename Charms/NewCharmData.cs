@@ -15,7 +15,7 @@ namespace CharmCrab {
 		public static bool Obtained(NewCharms c) {
 			switch (c) {
 				case NewCharms.VoidTendrils: return PlayerData.instance.GetBool("killedAbyssTendril");
-				case NewCharms.ShadeAura: return PlayerData.instance.GetBool("bigCatShadeConvo");
+				case NewCharms.PureAura: return PlayerData.instance.GetBool("bigCatShadeConvo");
 				case NewCharms.SoulInfusedBlade: return PlayerData.instance.GetBool("givenEmilitiaFlower");
 				case NewCharms.AfflictedDevourer: return PlayerData.instance.GetBool("midwifeWeaverlingConvo");
 				default: return false;

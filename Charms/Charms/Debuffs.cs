@@ -37,12 +37,22 @@ namespace CharmCrab.Charms {
 			}
 		}
 
+		public void Devourer() {
+			if (this.bleed != null) {
+				this.bleed.DealDamage();
+			}
+
+			if (this.seat != null) {
+				this.seat.DealDamage();
+			}
+		}
+
 		public void StackBleed() {
 			if (this.bleed == null) {
 				this.bleed = new Bleed(this.gameObject.GetComponent<HealthManager>());
 			}
 
-			this.bleed.increment();
+			this.bleed.Increment();
 		}
 
 		public void SoulEat() {
@@ -101,7 +111,6 @@ namespace CharmCrab.Charms {
 			}
 
 			public void DealDamage() {
-				Modding.Logger.Log("Applying Catcher Damage " + (int)(this.dmgApplied * Transferrence));
 				this.hm.Hit(this.GenHit());
 			}
 
@@ -135,14 +144,16 @@ namespace CharmCrab.Charms {
 
 			public void Update() {
 				if (this.duration >= TICK) {
-					Modding.Logger.Log("Apply Soul eater Tick");
-					var hit = this.GenHit(1);
-					hm.Hit(hit);
+					this.DealDamage();
 					this.duration = 0;
-					HeroController.instance.AddMPCharge(CHARGE);
 				} else {
 					this.duration += Time.deltaTime;
 				}
+			}
+
+			public void DealDamage() {
+				hm.Hit(this.GenHit(1));				
+				HeroController.instance.AddMPCharge(CHARGE);
 			}
 
 			private HitInstance GenHit(uint dmg) {
@@ -171,13 +182,20 @@ namespace CharmCrab.Charms {
 				this.hm = hm;
 			}
 
-			public void increment() {
+			public void Increment() {
 				this.duration = 0;
 				this.stacks += 1;
 			}
 
 			public uint Stacks {
 				get { return this.stacks; }
+			}
+
+			public void DealDamage() {
+				if (this.stacks == 0) {
+					return;
+				}
+				hm.Hit(this.GenHit(stacks));
 			}
 
 			public void Update() {
@@ -189,8 +207,7 @@ namespace CharmCrab.Charms {
 				if (t < DURATION) {
 					// Check to see if a full second has passed.
 					if ((int)duration < (int)t) {
-						var hit = this.GenHit(stacks);
-						hm.Hit(hit);
+						this.DealDamage();
 					}
 					duration = t;
 				} else {

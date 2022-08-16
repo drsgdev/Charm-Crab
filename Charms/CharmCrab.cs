@@ -22,11 +22,38 @@ namespace CharmCrab {
 
 		public static Dictionary<int, NewCharmData> NewCharms = new Dictionary<int, NewCharmData>() {
 			{0, new NewCharmData() {
-					Name = "Void Horror",
+					Name = "Void Tendrils",
 					Cost = 1,
 					Desc = "Changes your Shriek Spell to Summon Void Tendrils.",
 					SpriteName = "Void Horror Icon",
 					EnumValue = global::CharmCrab.NewCharms.VoidTendrils,
+				}
+			},
+
+			{1, new NewCharmData() {
+					Name = "Soul Infused Blade",
+					Cost = 1,
+					Desc = "Infuses Nail Arts with Soul",
+					SpriteName = "Soul Infused Icon",
+					EnumValue = global::CharmCrab.NewCharms.SoulInfusedBlade,
+				}
+			},
+
+			{2, new NewCharmData() {
+					Name = "Afflicted Devourer",
+					Cost = 1,
+					Desc = "Causes afflictions to harm your foe.",
+					SpriteName = "Devourer Icon",
+					EnumValue = global::CharmCrab.NewCharms.AfflictedDevourer,
+				}
+			},
+
+			{3, new NewCharmData() {
+					Name = "Aura of Purity",
+					Cost = 1,
+					Desc = "Converts your Shriek spell into a variably-lasting aura spell.",
+					SpriteName = "Aura Icon",
+					EnumValue = global::CharmCrab.NewCharms.PureAura,
 				}
 			},
 		};
@@ -170,14 +197,14 @@ namespace CharmCrab {
 				int charmNum = int.Parse(target.Split('_')[1]);
 				if (NewCharms.ContainsKey(charmNum)) {
 					var en = NewCharms[charmNum].EnumValue;
-					return NewCharmData.Obtained(en) || Settings.CharmObtained[en].Obtained;
+					return NewCharmData.Obtained(en) || Settings.CharmData[en].Obtained;
 				}
 			}
 			if (target.StartsWith("newCharm_")) {
 				int charmNum = int.Parse(target.Split('_')[1]);
 				if (NewCharms.ContainsKey(charmNum)) {
 					var en = NewCharms[charmNum].EnumValue;
-					return Settings.CharmObtained[en].New;
+					return Settings.CharmData[en].New;
 				}
 			}
 			if (target.StartsWith("equippedCharm_")) {
@@ -185,7 +212,7 @@ namespace CharmCrab {
 				
 				if (NewCharms.ContainsKey(charmNum)) {
 					var en = NewCharms[charmNum].EnumValue;
-					return Settings.CharmObtained[en].Equipped;
+					return Settings.CharmData[en].Equipped;
 				}
 			}
 
@@ -195,19 +222,19 @@ namespace CharmCrab {
 		private bool OnSetPlayerBoolHook(string target, bool orig) {
 			
 			if (target == "killedAbyssTendril" && orig) {
-				Settings.CharmObtained[global::CharmCrab.NewCharms.VoidTendrils].Obtained = true;
+				Settings.CharmData[global::CharmCrab.NewCharms.VoidTendrils].Obtained = true;
 			}
 
 			if (target == "bigCatShadeConvo" && orig) {
-				Settings.CharmObtained[global::CharmCrab.NewCharms.ShadeAura].Obtained = true;
+				Settings.CharmData[global::CharmCrab.NewCharms.PureAura].Obtained = true;
 			}
 
 			if (target == "givenEmilitiaFlower" && orig) {
-				Settings.CharmObtained[global::CharmCrab.NewCharms.SoulInfusedBlade].Obtained = true;
+				Settings.CharmData[global::CharmCrab.NewCharms.SoulInfusedBlade].Obtained = true;
 			}
 
 			if (target == "midwifeWeaverlingConvo" && orig) {
-				Settings.CharmObtained[global::CharmCrab.NewCharms.AfflictedDevourer].Obtained = true;
+				Settings.CharmData[global::CharmCrab.NewCharms.AfflictedDevourer].Obtained = true;
 			}
 
 			if (target == "atBench" && !orig) {
@@ -218,21 +245,21 @@ namespace CharmCrab {
 				int charmNum = int.Parse(target.Split('_')[1]);
 				if (NewCharms.ContainsKey(charmNum)) {
 					var en = NewCharms[charmNum].EnumValue;
-					Settings.CharmObtained[en].Obtained = orig;
+					Settings.CharmData[en].Obtained = orig;
 				}
 			}
 			if (target.StartsWith("newCharm_")) {
 				int charmNum = int.Parse(target.Split('_')[1]);
 				if (NewCharms.ContainsKey(charmNum)) {
 					var en = NewCharms[charmNum].EnumValue;
-					Settings.CharmObtained[en].New = orig;
+					Settings.CharmData[en].New = orig;
 				}
 			}
 			if (target.StartsWith("equippedCharm_")) {
 				int charmNum = int.Parse(target.Split('_')[1]);
 				if (NewCharms.ContainsKey(charmNum)) {
 					var en = NewCharms[charmNum].EnumValue;
-					Settings.CharmObtained[en].Equipped = orig;					
+					Settings.CharmData[en].Equipped = orig;					
 				}
 				Spells.SpellUpdater.UpdateSpellCosts();
 			}

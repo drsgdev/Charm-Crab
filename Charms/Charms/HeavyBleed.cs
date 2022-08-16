@@ -17,10 +17,7 @@ namespace CharmCrab.Charms {
 
 				var h = col.gameObject.GetComponent<HealthManager>();
 				if (h) {
-					var d = col.gameObject.GetComponent<Debuffs>();
-					if (d == null) {
-						d = col.gameObject.AddComponent<Debuffs>();
-					}
+					var d = Functions.AddIfNeeded<Debuffs>(col.gameObject);
 					d.StackBleed();
 				}
 			}

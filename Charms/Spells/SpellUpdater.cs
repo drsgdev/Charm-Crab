@@ -21,8 +21,8 @@ namespace CharmCrab.Spells {
 				Shriek = new ShriekSwitch();
 			}
 
-			//var coststate = FsmUtil.GetState(HeroController.instance.spellControl, "Inactive");
-			//FsmUtil.InsertMethod(coststate, 0, UpdateSpellCosts);
+			var coststate = FsmUtil.GetState(HeroController.instance.spellControl, "Can Cast?");
+			FsmUtil.InsertMethod(coststate, 0, UpdateSpellCosts);
 		}
 
 		public static void UpdateSpellCosts() {
@@ -70,7 +70,6 @@ namespace CharmCrab.Spells {
 		}
 
 		private class ShriekSwitch : FsmObject {
-			private int tendrilIndex;
 			private FsmState switchstate;
 			public ShriekSwitch() {
 				switchstate = FsmUtil.GetState(HeroController.instance.spellControl, "Level Check 3");
@@ -78,14 +77,8 @@ namespace CharmCrab.Spells {
 				FsmUtil.RemoveAction(switchstate, 0);
 				FsmUtil.AddMethod(switchstate, this.Branch);
 
-				foreach (var item in CharmCrab.NewCharms) {
-					if (item.Value.EnumValue == NewCharms.VoidTendrils) {
-						tendrilIndex = item.Key;
-						break;
-					}
-				}
-
 				this.CreateTendrilPath();
+				this.CreateAuraPath();
 			}
 
 			private void CreateTendrilPath() {
@@ -100,6 +93,19 @@ namespace CharmCrab.Spells {
 				FsmUtil.InsertMethod(s2, 0, SpawnTendrils);
 			}
 
+			private void CreateAuraPath() {
+				var s1 = FsmUtil.CopyState(HeroController.instance.spellControl, "Scream Antic2", "Aura Antic");
+				var s2 = FsmUtil.CopyState(HeroController.instance.spellControl, "Scream Burst 2", "Aura Summon");
+				FsmUtil.AddTransition(switchstate, "AURA", "Aura Antic");
+				FsmUtil.ChangeTransition(s1, "FINISHED", "Aura Summon");
+
+				FsmUtil.RemoveAction<ActivateGameObject>(s2);
+				FsmUtil.RemoveAction<ActivateGameObject>(s2);
+				FsmUtil.RemoveAction<SendMessage>(s2);
+				FsmUtil.RemoveAction<CreateObject>(s2);
+				FsmUtil.InsertMethod(s2, 0, this.SpawnAura);
+			}
+
 			private void Testing() {
 				Modding.Logger.Log("This state has been reached");
 			}
@@ -109,11 +115,23 @@ namespace CharmCrab.Spells {
 				obj.transform.position = HeroController.instance.gameObject.transform.position + 2*Vector3.up;
 			}
 
+			private void SpawnAura() {
+				if (AuraSpellController.instance == null || !AuraSpellController.instance.IsActive()) {
+					var mp = PlayerData.instance.GetInt("MPCharge");
+					AuraSpellController.RecentSoulUse = mp;
+					HeroController.instance.TakeMP(mp);
+					var obj = GameObject.Instantiate(CharmCrab.Assets.AuraPrefab);
+					obj.transform.position = HeroController.instance.gameObject.transform.position - 0.5f * Vector3.up;
+				}
+			}
+
 			private void Branch() {
-				if (PlayerData.instance.GetBool("equippedCharm_" + this.tendrilIndex)) {
+				if (CharmCrab.Settings.Equipped(NewCharms.VoidTendrils)) {
 					if (PlayerData.instance.GetInt("screamLevel") > 0) {
 						HeroController.instance.spellControl.SendEvent("TENDRILS");
 					}
+				} else if (CharmCrab.Settings.Equipped(NewCharms.PureAura)) {
+					HeroController.instance.spellControl.SendEvent("AURA");
 				} else {
 					if (PlayerData.instance.GetInt("screamLevel") == 1) {
 						HeroController.instance.spellControl.SendEvent("LEVEL 1");

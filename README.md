@@ -72,6 +72,6 @@ Some rebalances of note is enemy health, as damage is much higher than before, a
 
 # New Charms
 - Void Tendrils: Converts your shriek into a summon spell for Void Tendrils. Obtained by getting the journey entry for Void Tendrils.
-- Shade Aura (Not implemented yet): Turns your shriek into a spell that summons a persistent aura that will damage nearby enemies. This spell will consume all soul, regardless of charms, and damage and duration of this aura depends upon the soul consumed. This spell only interacts with soul catcher.
-- Afflicted Devourer (Not implemented yet): Charm that causes debuffs to proc regardless of their stacks. So Bleed will cause damage, Soul Eater will deal damage/provide Soul. Does not interact with Soul Catcher or infested.
-- Soul Infused Blade(Not implemented yet): Causes Nail arts to consume soul (up to a specific amount), and increase damage based off of the soul consumed.
+- Aura of Purity: Turns your shriek into a spell that summons a persistent aura that will damage nearby enemies. This spell will consume all soul, regardless of charms, and damage and duration of this aura depends upon the soul consumed. This spell only interacts with soul catcher.
+- Afflicted Devourer : Charm that causes debuffs to proc regardless of their stacks. So Bleed will cause damage, Soul Eater will deal damage/provide Soul. Does not interact with Soul Catcher or infested.
+- Soul Infused Blade: Causes Nail arts to consume soul (up to a specific amount), and increase damage based off of the soul consumed.

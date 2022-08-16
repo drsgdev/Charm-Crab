@@ -58,7 +58,7 @@ namespace CharmCrab {
 
 	public enum NewCharms {
 		VoidTendrils,
-		ShadeAura,
+		PureAura,
 		SoulInfusedBlade,
 		AfflictedDevourer,
 	}

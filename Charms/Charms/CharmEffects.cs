@@ -33,6 +33,7 @@ namespace CharmCrab.Charms {
 		private GrimmChild grimmchild;
 		private GlowingWomb womb;
 		private Flukes flukes;
+		private InfusedBlade infused;
 
 		private Functions.HitDetectManager hit;
 
@@ -43,6 +44,7 @@ namespace CharmCrab.Charms {
 			this.hit = new Functions.HitDetectManager(0.25f);
 
 
+			this.infused = new InfusedBlade();
 			this.flukes = new Flukes();
 			this.womb = new GlowingWomb();
 			this.bleed = new HeavyBleed();
@@ -78,19 +80,30 @@ namespace CharmCrab.Charms {
 			this.flukes.Update();
 		}
 
-		public int ComputeDamage(DamageType n) {
-			int baseDMG = 0;
-
+		public int BaseNailDamage() {
 			if (PlayerData.instance.nailSmithUpgrades == 0) {
-				baseDMG = 15;
+				return 15;
 			} else if (PlayerData.instance.nailSmithUpgrades == 1) {
-				baseDMG = 22;
+				return 22;
 			} else if (PlayerData.instance.nailSmithUpgrades == 2) {
-				baseDMG = 29;
+				return 29;
 			} else if (PlayerData.instance.nailSmithUpgrades == 3) {
-				baseDMG = 36;
+				return 36;
 			} else if (PlayerData.instance.nailSmithUpgrades == 4) {
-				baseDMG = 42;
+				return 42;
+			} else {
+				return 0;
+			}
+		}
+
+		public int ComputeDamage(DamageType n) {
+			int baseDMG = this.BaseNailDamage();
+
+			switch (n) {
+				case DamageType.GreatSlash: baseDMG = this.infused.AddDamage(baseDMG); break;
+				case DamageType.Cyclone: baseDMG = this.infused.AddDamage(baseDMG); break;
+				case DamageType.DashSlash: baseDMG = this.infused.AddDamage(baseDMG); break;
+				default: break;
 			}
 
 			baseDMG += this.pride.DmgBonus;
@@ -112,12 +125,12 @@ namespace CharmCrab.Charms {
 
 
 			switch (n) {
-				case DamageType.FireBall: baseDMG = this.HandleSpellDmg(baseDMG, n); break;
-				case DamageType.Dive: baseDMG = this.HandleSpellDmg(baseDMG, n); break;
-				case DamageType.DiveExtra: baseDMG = this.HandleSpellDmg(baseDMG, n); break;
-				case DamageType.Shriek: baseDMG = this.HandleSpellDmg(baseDMG, n); break;
-				case DamageType.SharpShadow: baseDMG = this.HandleSpellDmg(baseDMG, n); break;
-				case DamageType.Flukes: baseDMG = this.HandleSpellDmg(baseDMG, n); break;
+				case DamageType.FireBall: baseDMG = HandleCharmedSpells(baseDMG); break;
+				case DamageType.Dive: baseDMG = HandleCharmedSpells(baseDMG); break;
+				case DamageType.DiveExtra: baseDMG = HandleCharmedSpells(baseDMG); break;
+				case DamageType.Shriek: baseDMG = HandleCharmedSpells(baseDMG); break;
+				case DamageType.SharpShadow: baseDMG = HandleCharmedSpells(baseDMG); break;
+				case DamageType.Flukes: baseDMG = HandleCharmedSpells(baseDMG); break;
 				default: break;
 			}
 
@@ -132,14 +145,24 @@ namespace CharmCrab.Charms {
 			}
 		}
 
-		private int HandleSpellDmg(int baseDMG, DamageType t) {
+		public static int HandleShamanSpells(int baseDMG) {
 			if (PlayerData.instance.GetBool("equippedCharm_19")) {
 				baseDMG *= 4;
 			}
+			return baseDMG;
+		}
 
+		public static int HandleTwisterspells(int baseDMG) {
 			if (PlayerData.instance.GetBool("equippedCharm_33")) {
 				baseDMG /= 2;
 			}
+
+			return baseDMG;
+		}
+
+		public static int HandleCharmedSpells(int baseDMG) {
+			baseDMG = HandleShamanSpells(baseDMG);
+			baseDMG = HandleTwisterspells(baseDMG);
 
 			return baseDMG;
 		}
@@ -162,7 +185,10 @@ namespace CharmCrab.Charms {
 				var d = col.gameObject.GetComponent<Debuffs>();
 				if (d != null) {
 					d.InfestAttack();
-				}
+					if (CharmCrab.Settings.Equipped(NewCharms.AfflictedDevourer)) {
+						d.Devourer();
+					}
+				}				
 			}
 			this.hit.Register(col.gameObject);
 		}

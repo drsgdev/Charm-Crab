@@ -13,29 +13,32 @@ namespace CharmCrab
 		public GameObject TendrilsPrefab;
 		//public GameObject HorrorPrefab;
 		public GameObject RadiantOrbPrefab;
+		public GameObject AuraPrefab;
 
 		private AssetBundle ab;
 
 		public Assets()	{
-			string bundleN = "assets";
-			Assembly asm = Assembly.GetExecutingAssembly();
+			try {
+				string bundleN = "assets";
+				Assembly asm = Assembly.GetExecutingAssembly();
 
-			foreach (string res in asm.GetManifestResourceNames())
-			{
-				using (Stream s = asm.GetManifestResourceStream(res))
-				{
-					if (s == null) continue;
-					byte[] buffer = new byte[s.Length];
-					s.Read(buffer, 0, buffer.Length);
-					s.Dispose();
-					string bundleName = Path.GetExtension(res).Substring(1);
-					if (bundleName != bundleN) continue;
-					this.ab = AssetBundle.LoadFromMemory(buffer); // Store this somewhere you can access again.
+				foreach (string res in asm.GetManifestResourceNames()) {
+					using (Stream s = asm.GetManifestResourceStream(res)) {
+						if (s == null) continue;
+						byte[] buffer = new byte[s.Length];
+						s.Read(buffer, 0, buffer.Length);
+						s.Dispose();
+						string bundleName = Path.GetExtension(res).Substring(1);
+						if (bundleName != bundleN) continue;
+						this.ab = AssetBundle.LoadFromMemory(buffer); // Store this somewhere you can access again.
+					}
 				}
-			}
 
-			GetCharms();
-			GetSpells();
+				GetCharms();
+				GetSpells();
+			} catch (Exception ex) {
+				Modding.Logger.Log("Error on importing assets: " + ex.Message);
+			}
 		}
 
 		private void GetCharms() {
@@ -73,6 +76,13 @@ namespace CharmCrab
 			foreach (var a in RadiantOrbPrefab.GetComponents<AudioSource>()) {
 				a.volume = v3;
 			}
+
+			AuraPrefab = ab.LoadAsset<GameObject>("Aura");
+			AuraPrefab.GetComponent<SpriteRenderer>().material = new Material(Shader.Find("Sprites/Default"));
+			AuraPrefab.AddComponent<Spells.AuraSpellController>();
+			//foreach (var a in RadiantOrbPrefab.GetComponents<AudioSource>()) {
+			//	a.volume = v3;
+			//}
 		}
 
 
