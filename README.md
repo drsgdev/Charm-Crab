@@ -22,7 +22,7 @@ Some rebalances of note is enemy health, as damage is much higher than before, a
 
 - Wayward Compass: Now costs 0
 - Gathering Swarm: Now costs 0
-- Stalwart Shell:
+- Stalwart Shell: Has a 25% chance to reduce all damage take to 0.
 - Soul Catcher: Applies the Soul Catcher Debuff
 - Soul Eater: Applies the Soul Eater Debuff
 - Shaman Stone: Quadruples spell damage, but requires a full soul orb (3x cost).
@@ -39,7 +39,7 @@ Some rebalances of note is enemy health, as damage is much higher than before, a
 - Quick Slash: 
 - Long Nail: 
 - Mark of Pride: Increase damage as you attck; Lose it when taking damage
-- Fury of the Fallen: Works for all health values, but scales with relation to how much health is missing.
+- Fury of the Fallen: Increase damage by 25% per missing mask, also spell damage scales with fury.
 - Thorns of Agony: Not yet changed (have plans, but need thinking due to recent overhaul)
 - Baldur Shell: No Longer breaks (Not yet Implemented)
 - Fluke Nest: Now heals after enough strikes. (should hit hard, but not interact with soul eater/catcher)

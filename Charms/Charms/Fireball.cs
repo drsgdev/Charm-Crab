@@ -11,20 +11,20 @@ namespace CharmCrab.Charms {
 			int basedmg = 0;
 			if (PlayerData.instance.GetInt("fireballLevel") == 1) {
 				switch (PlayerData.instance.GetInt("nailSmithUpgrades")) {
-					case 0: basedmg = 15; break;
-					case 1: basedmg = 22; break;
-					case 2: basedmg = 29; break;
-					case 3: basedmg = 34; break;
-					case 4: basedmg = 38; break;
+					case 0: basedmg = 30; break;
+					case 1: basedmg = 40; break;
+					case 2: basedmg = 50; break;
+					case 3: basedmg = 60; break;
+					case 4: basedmg = 70; break;
 					default: basedmg = 0; break;
 				}
 			} else if (PlayerData.instance.GetInt("fireballLevel") == 2) {
 				switch (PlayerData.instance.GetInt("nailSmithUpgrades")) {
-					case 0: basedmg = 30; break;
-					case 1: basedmg = 45; break;
-					case 2: basedmg = 59; break;
-					case 3: basedmg = 67; break;
-					case 4: basedmg = 75; break;
+					case 0: basedmg = 50; break;
+					case 1: basedmg = 65; break;
+					case 2: basedmg = 80; break;
+					case 3: basedmg = 90; break;
+					case 4: basedmg = 100; break;
 					default: basedmg = 0; break;
 				}
 			}

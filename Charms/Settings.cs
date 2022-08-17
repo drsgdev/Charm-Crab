@@ -12,7 +12,7 @@ namespace CharmCrab {
         };
 
         public class Data {
-            public bool Obtained = true;
+            public bool Obtained = false;
             public bool New = false;
             public bool Equipped = false;
 	    }

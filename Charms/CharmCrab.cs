@@ -182,7 +182,7 @@ namespace CharmCrab {
 			ModHooks.TakeDamageHook += TakeDamage;
 			ModHooks.ObjectPoolSpawnHook += charmEffects.UpdateSpells;
 			ModHooks.ColliderCreateHook += charmEffects.OnColliderCreate;
-			ModHooks.TakeDamageHook += charmEffects.DamageTaken;
+			ModHooks.TakeDamageHook += charmEffects.TakeDamage;
 			Spells.SpellUpdater.Init();
 			Spells.SpellUpdater.UpdateSpellCosts();
 

@@ -172,7 +172,7 @@ namespace CharmCrab.Charms {
 		}
 
 		private class Bleed {
-			public readonly float DURATION = 2;
+			public readonly float DURATION = 5;
 
 			private uint stacks;
 			private HealthManager hm;

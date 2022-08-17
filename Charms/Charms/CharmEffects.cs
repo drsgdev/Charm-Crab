@@ -34,6 +34,7 @@ namespace CharmCrab.Charms {
 		private GlowingWomb womb;
 		private Flukes flukes;
 		private InfusedBlade infused;
+		private StalwartShell stalwart;
 
 		private Functions.HitDetectManager hit;
 
@@ -44,6 +45,7 @@ namespace CharmCrab.Charms {
 			this.hit = new Functions.HitDetectManager(0.25f);
 
 
+			this.stalwart = new StalwartShell();
 			this.infused = new InfusedBlade();
 			this.flukes = new Flukes();
 			this.womb = new GlowingWomb();
@@ -107,7 +109,7 @@ namespace CharmCrab.Charms {
 			}
 
 			baseDMG += this.pride.DmgBonus;
-			baseDMG = (int) (baseDMG * this.fury.Mult);
+			
 
 			switch (n) {
 				case DamageType.Slash: baseDMG = (int) (this.nmg.Mult(n) * baseDMG); break;
@@ -134,7 +136,7 @@ namespace CharmCrab.Charms {
 				default: break;
 			}
 
-
+			baseDMG = (int)(baseDMG * this.fury.Mult);
 			return baseDMG;
 		}
 
@@ -194,12 +196,10 @@ namespace CharmCrab.Charms {
 		}
 
 		public int TakeDamage(ref int hazard, int dmg) {
+			dmg += 1;
 			this.pride.TakeDamage(dmg);
-			return this.steady.TakeDamage(ref hazard, dmg);
-		}
-
-		public int DamageTaken(ref int hazard, int dmg) {
-			this.pride.TakeDamage(dmg);
+			dmg = this.steady.TakeDamage(ref hazard, dmg);
+			dmg = this.stalwart.TakeDamage(ref hazard, dmg);
 			return dmg;
 		}
 
@@ -252,7 +252,6 @@ namespace CharmCrab.Charms {
 			} else if (owner.GameObject.name == "Great Slash") {
 				hitInst.DamageDealt = this.ComputeDamage(DamageType.GreatSlash);
 			} else if ((owner.GameObject.name == "Hit L" || owner.GameObject.name == "Hit R") && hitInst.AttackType == AttackTypes.Nail) {
-				var parent = owner.GameObject.transform.parent;
 				hitInst.DamageDealt = this.ComputeDamage(DamageType.Cyclone);
 			} else if ((owner.GameObject.name == "Hit L" || owner.GameObject.name == "Hit R")) {
 				var parent = owner.GameObject.transform.parent;
@@ -268,10 +267,10 @@ namespace CharmCrab.Charms {
 			} else if (owner.GameObject.name == "Hit L" || owner.GameObject.name == "Hit R" || owner.GameObject.name == "Hit U" || owner.GameObject.name == "Hit D") {
 				var parent = owner.GameObject.transform.parent;
 				if (parent != null) {
-					if (parent.name == "Scr Heads 2") {
+					if (parent.name.Contains("Scr Heads")) {
 						hitInst.DamageDealt = this.ComputeDamage(DamageType.Shriek);
 					}
-					if (parent.name == "Q Slam 2" || parent.name == "Q Mega") {
+					if (parent.name.Contains("Q Slam") || parent.name.Contains("Q Mega")) {
 						hitInst.DamageDealt = this.ComputeDamage(DamageType.Dive);
 					}
 				}

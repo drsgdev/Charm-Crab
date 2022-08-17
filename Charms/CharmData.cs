@@ -109,9 +109,9 @@ namespace CharmCrab {
                 case Charm.GatheringSwarm: return 0;
                 case Charm.WaywardCompass: return 0;
                 case Charm.GrubSong: return 1;
-                case Charm.StalwartShell: return 1;
+                case Charm.StalwartShell: return 2;
                 case Charm.BaldurShell: return 1;
-                case Charm.Fury: return 1;
+                case Charm.Fury: return 3;
                 case Charm.QuickFocus: return 1;
                 case Charm.LifebloodHeart: return 1;
                 case Charm.LifebloodCore: return 1;
@@ -119,7 +119,7 @@ namespace CharmCrab {
                 case Charm.Flukenest: return 1;
                 case Charm.Thorns: return 1;
                 case Charm.MarkOfPride: return 1;
-                case Charm.SteadyBody: return 1;
+                case Charm.SteadyBody: return 3;
                 case Charm.HeavyBlow: return 1;
                 case Charm.SharpShadow: return 1;
                 case Charm.SporeShroom: return 1;
