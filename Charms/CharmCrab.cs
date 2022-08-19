@@ -18,8 +18,9 @@ using SFCore;
 namespace CharmCrab {
 
 	class CharmCrab : Mod, ILocalSettings<Settings> {
-		public readonly int HealthScaleFactor = 5;
-		public readonly int BossHealthThreshold = 65;
+		public const int HealthScaleFactor = 5;
+		public const int BossHealthThreshold = 65;
+		public const int SuperBossHealthThreshold = 500;
 
 		public static Dictionary<int, NewCharmData> NewCharms = new Dictionary<int, NewCharmData>() {
 			{0, new NewCharmData() {
@@ -97,7 +98,7 @@ namespace CharmCrab {
 
 		private void InitHooks() {
 
-			//ModHooks.HeroUpdateHook += AddBehaviour;
+			ModHooks.HeroUpdateHook += AddBehaviour;
 			ModHooks.OnEnableEnemyHook += OnEnemyEnable;
 			ModHooks.GetPlayerBoolHook += OnGetPlayerBoolHook;
 			ModHooks.SetPlayerBoolHook += OnSetPlayerBoolHook;
@@ -146,7 +147,11 @@ namespace CharmCrab {
 		private bool OnEnemyEnable(GameObject obj, bool isdead) {
 			var hm = obj.GetComponent<HealthManager>();
 
-			if (hm.hp >= BossHealthThreshold) {
+			if (hm.hp >= SuperBossHealthThreshold) {
+				foreach (var d in obj.GetComponentsInChildren<DamageHero>()) {
+					d.damageDealt += 2;
+				}
+			} else if (hm.hp >= BossHealthThreshold) {
 				foreach (var d in obj.GetComponentsInChildren<DamageHero>()) {
 					d.damageDealt += 1;
 				}
@@ -171,7 +176,6 @@ namespace CharmCrab {
 					ModHooks.HitInstanceHook -= Charms.CharmEffects.instance.DamageRecalc;
 					ModHooks.ObjectPoolSpawnHook -= Charms.CharmEffects.instance.UpdateSpells;
 				}
-
 				ModHooks.HeroUpdateHook += AddBehaviour;
 				//charmEffects = null;
 			} else {
@@ -182,8 +186,13 @@ namespace CharmCrab {
 		}
 
 		private void AddBehaviour() {
-			Modding.Logger.Log("Added Behaviour");
-			var charmEffects = Functions.AddIfNeeded<Charms.CharmEffects>(HeroController.instance.gameObject);
+			var charmEffects = HeroController.instance.gameObject.GetComponent<Charms.CharmEffects>();
+			if (charmEffects != null) {
+				return;
+			} else {
+				charmEffects = HeroController.instance.gameObject.AddComponent<Charms.CharmEffects>();
+			}
+			//var charmEffects = Functions.AddIfNeeded<Charms.CharmEffects>(HeroController.instance.gameObject);
 
 			ModHooks.SlashHitHook   += charmEffects.SlashHitHandler;	
 			ModHooks.TakeDamageHook += charmEffects.TakeDamage;
@@ -194,8 +203,8 @@ namespace CharmCrab {
 			Spells.SpellUpdater.UpdateSpellCosts();
 
 			ModHooks.HeroUpdateHook -= AddBehaviour;
-
-			
+			//Log("Looking for Blocker");
+			//Modding.Logger.Log("Blocker: " + HeroController.instance.gameObject.transform.Find("Blocker"));
 		}
 
 

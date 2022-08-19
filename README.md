@@ -18,11 +18,13 @@ damage scaling, and upgrading your nail also affects your spells. So old, somewh
 
 Some rebalances of note is enemy health, as damage is much higher than before, and thus is much higher. Base soul gain has also been nerfed, and this includes the base soul gain while wearing Soul Catcher/Eater so soul has more complex mechanics to be gathered quickly. The goal of this is accomodate builds that care about soul and builds that don't; Soul while useful for healing will be harder to gather by default but some changed charms accomodate healing so focusing isn't a primary healing methodology but is still useful in cases.
 
+Note that rebalancing is done over casual play; Knowing which charms are the best and knowing how to get certain charm very early are not balanced around. So becoming overpowered for some early stuff by ignoring it and collecting strong charms will not be nerfed. This is due to how the game can be traversed in creative and arguable valid ways (or just in many different ways by default).
+
 # Charm changes
 
 - Wayward Compass: Now costs 0
 - Gathering Swarm: Now costs 0
-- Stalwart Shell: Has a 25% chance to reduce all damage take to 0.
+- Stalwart Shell: Reduce damage taken by 1, to a minimum of 1.
 - Soul Catcher: Applies the Soul Catcher Debuff
 - Soul Eater: Applies the Soul Eater Debuff
 - Shaman Stone: Quadruples spell damage, but requires a full soul orb (3x cost).
@@ -34,14 +36,14 @@ Some rebalances of note is enemy health, as damage is much higher than before, a
 - Fragile Strength:
 - Fragile Greed: 
 - Spell Twister: Spell costs no soul, but deal half damage (dmg ratio very likely to change).
-- Steady Body: Reduce damage taken by 1, to a minimum of 1.
+- Steady Body: Has a 25% chance to reduce all damage take to 0.
 - Heavy Blow: Melee attacks inflict the Bleed debuff
 - Quick Slash: 
 - Long Nail: 
 - Mark of Pride: Increase damage as you attck; Lose it when taking damage
 - Fury of the Fallen: Increase damage by 25% per missing mask, also spell damage scales with fury.
 - Thorns of Agony: Not yet changed (have plans, but need thinking due to recent overhaul)
-- Baldur Shell: No Longer breaks (Not yet Implemented)
+- Baldur Shell: Spells now proc the effect, and reduces all damage taken to zero while active
 - Fluke Nest: Now heals after enough strikes. (should hit hard, but not interact with soul eater/catcher)
 - Defender's Crest: Unchanged (other effects modified by this charm are changed).
 - Glowing Womb: Summon costs happens more frequently, costs more Soul, but can have up to 15 minions.
@@ -75,3 +77,8 @@ Some rebalances of note is enemy health, as damage is much higher than before, a
 - Aura of Purity: Turns your shriek into a spell that summons a persistent aura that will damage nearby enemies. This spell will consume all soul, regardless of charms, and damage and duration of this aura depends upon the soul consumed. This spell only interacts with soul catcher.
 - Afflicted Devourer : Charm that causes debuffs to proc regardless of their stacks. So Bleed will cause damage, Soul Eater will deal damage/provide Soul. Does not interact with Soul Catcher or infested.
 - Soul Infused Blade: Causes Nail arts to consume soul (up to a specific amount), and increase damage based off of the soul consumed.
+
+
+# Known Bugs (and planned fixes)
+- Hornet: Not all damage is boss-damage
+- Baldur shell: When breaking it'll only glow and not spawn again, even if the effect is active

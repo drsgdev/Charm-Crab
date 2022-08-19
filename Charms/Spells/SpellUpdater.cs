@@ -23,6 +23,9 @@ namespace CharmCrab.Spells {
 
 			var coststate = FsmUtil.GetState(HeroController.instance.spellControl, "Can Cast?");
 			FsmUtil.InsertMethod(coststate, 0, UpdateSpellCosts);
+
+			var resetState = FsmUtil.GetState(HeroController.instance.spellControl, "Reset Cam Zoom");
+			FsmUtil.InsertMethod(resetState, 0, () => { Charms.BaldurShell.CloseBlocker(); });
 		}
 
 		public static void UpdateSpellCosts() {
@@ -53,11 +56,14 @@ namespace CharmCrab.Spells {
 			
 			public FireballSwitch() {
 				var switchstate = FsmUtil.GetState(HeroController.instance.spellControl, "Level Check");
+				var anticStart = FsmUtil.GetState(HeroController.instance.spellControl, "Fireball Antic");
+				var anticEnd = FsmUtil.GetState(HeroController.instance.spellControl, "Spell End");
 
 				FsmUtil.RemoveAction(switchstate, 0);
-
 				FsmUtil.AddMethod(switchstate, this.Branch);
 
+				FsmUtil.InsertMethod(anticStart, 0, () => { Charms.BaldurShell.OpenBlocker(); });
+				FsmUtil.InsertMethod(anticEnd, 0, () => { Charms.BaldurShell.CloseBlocker(); });
 			}
 			public void Branch() {
 				
@@ -73,9 +79,13 @@ namespace CharmCrab.Spells {
 			private FsmState switchstate;
 			public ShriekSwitch() {
 				switchstate = FsmUtil.GetState(HeroController.instance.spellControl, "Level Check 3");
+				var anticStart = FsmUtil.GetState(HeroController.instance.spellControl, "Level Check 3");
+				//var anticEnd = FsmUtil.GetState(HeroController.instance.spellControl, "Spell End");
 
 				FsmUtil.RemoveAction(switchstate, 0);
 				FsmUtil.AddMethod(switchstate, this.Branch);
+
+				FsmUtil.InsertMethod(anticStart, 0, () => { Charms.BaldurShell.OpenBlocker(); });
 
 				this.CreateTendrilPath();
 				this.CreateAuraPath();

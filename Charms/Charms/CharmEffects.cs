@@ -200,7 +200,11 @@ namespace CharmCrab.Charms {
 			this.pride.TakeDamage(dmg);
 			dmg = this.steady.TakeDamage(ref hazard, dmg);
 			dmg = this.stalwart.TakeDamage(ref hazard, dmg);
-			Modding.Logger.Log("Damage Taken: " + dmg);
+
+			if (BaldurShell.Active()) {
+				dmg = 0;
+			}
+
 			return dmg;
 		}
 
