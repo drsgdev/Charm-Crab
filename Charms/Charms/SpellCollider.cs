@@ -40,7 +40,7 @@ namespace CharmCrab.Charms {
 						afflicted.Add(col.gameObject);
 					}
 					if (cc) {
-						d.SoulCatch(CharmCrab.charmEffects.ComputeDamage(this.DType));
+						d.SoulCatch(CharmEffects.instance.ComputeDamage(this.DType));
 					}
 				}
 			}
@@ -61,7 +61,7 @@ namespace CharmCrab.Charms {
 						afflicted.Add(col.gameObject);
 					}
 					if (cc) {
-						d.SoulCatch(CharmCrab.charmEffects.ComputeDamage(this.DType));
+						d.SoulCatch(CharmEffects.instance.ComputeDamage(this.DType));
 					}
 				}
 			}

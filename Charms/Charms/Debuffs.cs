@@ -45,6 +45,10 @@ namespace CharmCrab.Charms {
 			if (this.seat != null) {
 				this.seat.DealDamage();
 			}
+
+			if (this.infested != null) {
+				this.infested.Stack();
+			}
 		}
 
 		public void StackBleed() {

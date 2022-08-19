@@ -1,16 +1,13 @@
-﻿//using System;
-using UnityEngine;
+﻿using System;
 
 namespace CharmCrab.Charms {
 	class StalwartShell {
-		public readonly float ProcRate = 0.25f;
 		public int TakeDamage(ref int hazard, int dmg) {
-			if (CharmData.Equipped(Charm.StalwartShell)) {
-				if (Random.Range(0, 1) < ProcRate) {
-					return 0;
-				}
+			if (PlayerData.instance.GetBool("equippedCharm_4")) {
+				return Math.Max(1, dmg - 1);
+			} else {
+				return dmg;
 			}
-			return dmg;
 		}
-	}
+	}		
 }

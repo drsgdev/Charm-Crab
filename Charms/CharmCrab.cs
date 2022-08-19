@@ -19,6 +19,7 @@ namespace CharmCrab {
 
 	class CharmCrab : Mod, ILocalSettings<Settings> {
 		public readonly int HealthScaleFactor = 5;
+		public readonly int BossHealthThreshold = 65;
 
 		public static Dictionary<int, NewCharmData> NewCharms = new Dictionary<int, NewCharmData>() {
 			{0, new NewCharmData() {
@@ -59,7 +60,7 @@ namespace CharmCrab {
 		};
 
 		public static Assets Assets;
-		public static Charms.CharmEffects charmEffects;
+		//public static Charms.CharmEffects charmEffects;
 
 		public static Settings Settings = new Settings();
 
@@ -72,6 +73,7 @@ namespace CharmCrab {
 		public override void Initialize() {
 			Assets = new Assets();
 
+			
 			base.Initialize();
 			this.InitHooks();
 			this.SetCharmIndices();
@@ -95,8 +97,7 @@ namespace CharmCrab {
 
 		private void InitHooks() {
 
-			ModHooks.HeroUpdateHook += AddBehaviour;
-			ModHooks.HitInstanceHook += (HutongGames.PlayMaker.Fsm owner, HitInstance hitInst) => { return charmEffects.DamageRecalc(owner, hitInst); };
+			//ModHooks.HeroUpdateHook += AddBehaviour;
 			ModHooks.OnEnableEnemyHook += OnEnemyEnable;
 			ModHooks.GetPlayerBoolHook += OnGetPlayerBoolHook;
 			ModHooks.SetPlayerBoolHook += OnSetPlayerBoolHook;
@@ -108,15 +109,9 @@ namespace CharmCrab {
 			ModHooks.GetPlayerIntHook += OnGetPlayerIntHook;
 			ModHooks.SetPlayerIntHook += OnSetPlayerIntHook;
 			ModHooks.SoulGainHook += OnSoulGain;
-			//ModHooks.RecordKillForJournalHook
 
 			UnityEngine.SceneManagement.SceneManager.sceneLoaded += SceneLoaded;
 		}
-
-		public void RecordKillForJournalHandler(EnemyDeathEffects enemyDeathEffects, string playerDataName, string killedBoolPlayerDataLookupKey, string killCountIntPlayerDataLookupKey, string newDataBoolPlayerDataLookupKey) {
-			
-		}
-
 
 		public int OnSoulGain(int num) {
 			// This just undoes what the built-in Soul gain calculations do based off of charms. This is so the soul
@@ -151,18 +146,34 @@ namespace CharmCrab {
 		private bool OnEnemyEnable(GameObject obj, bool isdead) {
 			var hm = obj.GetComponent<HealthManager>();
 
+			if (hm.hp >= BossHealthThreshold) {
+				foreach (var d in obj.GetComponentsInChildren<DamageHero>()) {
+					d.damageDealt += 1;
+				}
+			}
+
 			if (hm) {
 				hm.hp *= HealthScaleFactor;
-			}			
+			}
+
+			
 
 			return isdead;
         }
 
 		public void SceneLoaded(Scene scene, LoadSceneMode mode) {
 			if (scene.name == "Menu_Title") {
-				ModHooks.ObjectPoolSpawnHook -= charmEffects.UpdateSpells;
+				if (Charms.CharmEffects.instance != null) {
+					ModHooks.SlashHitHook -= Charms.CharmEffects.instance.SlashHitHandler;
+					ModHooks.TakeDamageHook -= Charms.CharmEffects.instance.TakeDamage;
+					ModHooks.ObjectPoolSpawnHook -= Charms.CharmEffects.instance.UpdateSpells;
+					ModHooks.ColliderCreateHook -= Charms.CharmEffects.instance.OnColliderCreate;
+					ModHooks.HitInstanceHook -= Charms.CharmEffects.instance.DamageRecalc;
+					ModHooks.ObjectPoolSpawnHook -= Charms.CharmEffects.instance.UpdateSpells;
+				}
+
 				ModHooks.HeroUpdateHook += AddBehaviour;
-				charmEffects = null;
+				//charmEffects = null;
 			} else {
 				// Useful on some odd scene transitions it resets some FSM.
 				Spells.SpellUpdater.UpdateSpellCosts();
@@ -170,19 +181,15 @@ namespace CharmCrab {
 			
 		}
 
-		public int TakeDamage(ref int hazard, int dmg) {
-			return charmEffects.TakeDamage(ref hazard, dmg);
-
-		}
-
 		private void AddBehaviour() {
-			charmEffects = Functions.AddIfNeeded<Charms.CharmEffects>(HeroController.instance.gameObject);
+			Modding.Logger.Log("Added Behaviour");
+			var charmEffects = Functions.AddIfNeeded<Charms.CharmEffects>(HeroController.instance.gameObject);
 
 			ModHooks.SlashHitHook   += charmEffects.SlashHitHandler;	
-			ModHooks.TakeDamageHook += TakeDamage;
+			ModHooks.TakeDamageHook += charmEffects.TakeDamage;
 			ModHooks.ObjectPoolSpawnHook += charmEffects.UpdateSpells;
 			ModHooks.ColliderCreateHook += charmEffects.OnColliderCreate;
-			ModHooks.TakeDamageHook += charmEffects.TakeDamage;
+			ModHooks.HitInstanceHook += charmEffects.DamageRecalc;
 			Spells.SpellUpdater.Init();
 			Spells.SpellUpdater.UpdateSpellCosts();
 

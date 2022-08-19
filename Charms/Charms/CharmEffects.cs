@@ -196,10 +196,11 @@ namespace CharmCrab.Charms {
 		}
 
 		public int TakeDamage(ref int hazard, int dmg) {
-			dmg += 1;
+			//dmg += 1;
 			this.pride.TakeDamage(dmg);
 			dmg = this.steady.TakeDamage(ref hazard, dmg);
 			dmg = this.stalwart.TakeDamage(ref hazard, dmg);
+			Modding.Logger.Log("Damage Taken: " + dmg);
 			return dmg;
 		}
 
