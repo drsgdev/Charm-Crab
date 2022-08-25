@@ -110,9 +110,14 @@ namespace CharmCrab.Charms {
 
 			baseDMG += this.pride.DmgBonus;
 			
+			if (CharmData.Equipped(Charm.FragileStrength)) {
+				baseDMG += 4*baseDMG/3;
+			} else if (CharmData.Equipped(Charm.UnbreakableStrength)) {
+				baseDMG += 3*baseDMG/4;
+			}
 
 			switch (n) {
-				case DamageType.Slash: baseDMG = (int) (this.nmg.Mult(n) * baseDMG); break;
+				//case DamageType.Slash: baseDMG = (int) (this.nmg.Mult(n) * baseDMG); break;
 				case DamageType.GreatSlash: baseDMG = (int)(this.nmg.Mult(n) * baseDMG); break;
 				case DamageType.Cyclone: baseDMG = (int)(this.nmg.Mult(n) * baseDMG); break;
 				case DamageType.DashSlash: baseDMG = (int)(this.nmg.Mult(n) * baseDMG); break;
@@ -196,14 +201,21 @@ namespace CharmCrab.Charms {
 		}
 
 		public int TakeDamage(ref int hazard, int dmg) {
-			//dmg += 1;
 			this.pride.TakeDamage(dmg);
 			dmg = this.steady.TakeDamage(ref hazard, dmg);
 			dmg = this.stalwart.TakeDamage(ref hazard, dmg);
 
+			//Modding.Logger.Log("pre-dmg = " + dmg);
+
 			if (BaldurShell.Active()) {
 				dmg = 0;
 			}
+
+			if (CharmData.Equipped(Charm.FragileStrength)) {
+				dmg *= 2;
+			}
+
+			//Modding.Logger.Log("dmg = " + dmg);
 
 			return dmg;
 		}

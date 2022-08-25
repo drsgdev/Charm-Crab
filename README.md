@@ -33,7 +33,7 @@ Note that rebalancing is done over casual play; Knowing which charms are the bes
 - Grubsong:                    
 - Grubberfly's elegy:          
 - Fragile Heart:               
-- Fragile Strength:
+- Fragile Strength: Fragile: a 133% dmg increase, but double damage taken. Unbreakable: 75% dmg increase, but you do not take increased damage.
 - Fragile Greed: 
 - Spell Twister: Spell costs no soul, but deal half damage (dmg ratio very likely to change).
 - Steady Body: Has a 25% chance to reduce all damage take to 0.
@@ -81,4 +81,3 @@ Note that rebalancing is done over casual play; Knowing which charms are the bes
 
 # Known Bugs (and planned fixes)
 - Hornet: Not all damage is boss-damage
-- Baldur shell: When breaking it'll only glow and not spawn again, even if the effect is active

@@ -5,8 +5,10 @@ using HutongGames.PlayMaker.Actions;
 
 namespace CharmCrab.Charms {
 	class BaldurShell {
+		public const float COOLDOWN = 6;
 		public static GameObject blocker;
 		public static PlayMakerFSM fsm;
+		public static float cdDuration = 0;
 
 		public static readonly HashSet<string> ActiveStates = new HashSet<string>() {
 			"Hits Left?",
@@ -16,9 +18,21 @@ namespace CharmCrab.Charms {
 
 		public static void OpenBlocker() {
 			if (!CharmData.Equipped(Charm.BaldurShell)) { return; }
-			if (fsm != null) {
-				fsm.SendEvent("FOCUS START");
+
+			// If spell twister is equipped put it on cooldown.
+			if (CharmData.Equipped(Charm.SpellTwister)) {
+				if (cdDuration <= 0) {
+					if (fsm != null) {
+						fsm.SendEvent("FOCUS START");
+						cdDuration = COOLDOWN;
+					}
+				}
+			} else {
+				if (fsm != null) {
+					fsm.SendEvent("FOCUS START");
+				}
 			}
+			
 			
 		}
 
@@ -56,7 +70,8 @@ namespace CharmCrab.Charms {
 		}
 
 		public void Update() {
-			
+			cdDuration -= Time.deltaTime;
+			cdDuration = Mathf.Max(cdDuration, 0);
 		}
 	}
 }

@@ -68,7 +68,7 @@ namespace CharmCrab.Charms {
 		}
 
 		public void OnCollisionExit2D(Collision2D col) {
-			Modding.Logger.Log("apples");
+			
 		}
 
 		public void OnTriggerExit2D(Collider2D col) {
