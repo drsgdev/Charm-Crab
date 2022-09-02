@@ -13,6 +13,10 @@ namespace CharmCrab {
 		public NewCharms EnumValue;
 
 		public static bool Obtained(NewCharms c) {
+			if (PlayerData.instance.bossRushMode) {
+				return true;
+			}
+
 			switch (c) {
 				case NewCharms.VoidTendrils: return PlayerData.instance.GetBool("killedAbyssTendril");
 				case NewCharms.PureAura: return PlayerData.instance.GetBool("bigCatShadeConvo");

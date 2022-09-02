@@ -31,7 +31,7 @@ namespace CharmCrab {
 					Name = "Void Tendrils",
 					Cost = 1,
 					Desc = "Changes your Shriek Spell to Summon Void Tendrils.",
-					SpriteName = "Void Horror Icon",
+					SpriteName = "Tendril Charm Icon",
 					EnumValue = global::CharmCrab.NewCharms.VoidTendrils,
 				}
 			},
@@ -58,7 +58,7 @@ namespace CharmCrab {
 					Name = "Aura of Purity",
 					Cost = 1,
 					Desc = "Converts your Shriek spell into a variably-lasting aura spell.",
-					SpriteName = "Aura Icon",
+					SpriteName = "Pure Aura Icon",
 					EnumValue = global::CharmCrab.NewCharms.PureAura,
 				}
 			},
@@ -119,25 +119,7 @@ namespace CharmCrab {
 		}
 
 		public int OnSoulGain(int num) {
-			// This just undoes what the built-in Soul gain calculations do based off of charms. This is so the soul
-			// gain from Soul Catcher/Eater isn't ridiculous with their new effects. This information comes directly from
-			// the default code in the game.
-			if (PlayerData.instance.GetInt("MPCharge") < PlayerData.instance.GetInt("maxMP")) {
-				if (PlayerData.instance.GetBool("equippedCharm_20")) {
-					num -= 3;
-				}
-				if (PlayerData.instance.GetBool("equippedCharm_21")) {
-					num -= 8;
-				}
-			} else {
-				if (PlayerData.instance.GetBool("equippedCharm_20")) {
-					num -= 2;
-				}
-				if (PlayerData.instance.GetBool("equippedCharm_21")) {
-					num -= 6;
-				}
-			}
-			return num/2;
+			return Charms.CharmEffects.instance.OnSoulGain(num);
 		}
 
 		public void OnLoadLocal(Settings s) {
@@ -149,8 +131,6 @@ namespace CharmCrab {
         }
 
 		private bool OnEnemyEnable(GameObject obj, bool isdead) {
-			
-			//Log("name = " + obj.name);
 			if (obj.GetComponent<EnemyStats>() == null) {
 				var stats = obj.AddComponent<EnemyStats>();
 				var hm = obj.GetComponent<HealthManager>();
@@ -183,6 +163,7 @@ namespace CharmCrab {
 					ModHooks.ColliderCreateHook -= Charms.CharmEffects.instance.OnColliderCreate;
 					ModHooks.HitInstanceHook -= Charms.CharmEffects.instance.DamageRecalc;
 					ModHooks.ObjectPoolSpawnHook -= Charms.CharmEffects.instance.UpdateSpells;
+					ModHooks.SetPlayerIntHook -= Charms.CharmEffects.instance.OnPlayerSetInt;
 				}
 				ModHooks.HeroUpdateHook += AddBehaviour;
 				//charmEffects = null;
@@ -207,6 +188,7 @@ namespace CharmCrab {
 			ModHooks.ObjectPoolSpawnHook += charmEffects.UpdateSpells;
 			ModHooks.ColliderCreateHook += charmEffects.OnColliderCreate;
 			ModHooks.HitInstanceHook += charmEffects.DamageRecalc;
+			ModHooks.SetPlayerIntHook += charmEffects.OnPlayerSetInt;
 			Spells.SpellUpdater.Init();
 			Spells.SpellUpdater.UpdateSpellCosts();
 

@@ -35,6 +35,7 @@ namespace CharmCrab.Charms {
 		private Flukes flukes;
 		private InfusedBlade infused;
 		private StalwartShell stalwart;
+		private Greed greed;
 
 		private Functions.HitDetectManager hit;
 
@@ -46,6 +47,7 @@ namespace CharmCrab.Charms {
 
 
 			this.stalwart = new StalwartShell();
+			this.greed = new Greed();
 			this.infused = new InfusedBlade();
 			this.flukes = new Flukes();
 			this.womb = new GlowingWomb();
@@ -80,9 +82,10 @@ namespace CharmCrab.Charms {
 			this.joni.Update();
 			this.hit.Update();
 			this.flukes.Update();
+			this.greed.Update();
 		}
 
-		public int BaseNailDamage() {
+		public static int BaseNailDamage() {
 			if (PlayerData.instance.nailSmithUpgrades == 0) {
 				return 15;
 			} else if (PlayerData.instance.nailSmithUpgrades == 1) {
@@ -98,8 +101,12 @@ namespace CharmCrab.Charms {
 			}
 		}
 
+		private static bool IsNailDamage(DamageType d) {
+			return d == DamageType.Cyclone || d == DamageType.DashSlash || d == DamageType.GreatSlash || d == DamageType.Slash;
+		}
+
 		public int ComputeDamage(DamageType n) {
-			int baseDMG = this.BaseNailDamage();
+			int baseDMG = BaseNailDamage();
 
 			switch (n) {
 				case DamageType.GreatSlash: baseDMG = this.infused.AddDamage(baseDMG); break;
@@ -108,13 +115,15 @@ namespace CharmCrab.Charms {
 				default: break;
 			}
 
-			baseDMG += this.pride.DmgBonus;
-			
-			if (CharmData.Equipped(Charm.FragileStrength)) {
-				baseDMG += 4*baseDMG/3;
-			} else if (CharmData.Equipped(Charm.UnbreakableStrength)) {
-				baseDMG += 3*baseDMG/4;
-			}
+			if (IsNailDamage(n)) {
+				baseDMG += this.pride.DmgBonus;
+				baseDMG += this.greed.DamageBonus();
+				if (CharmData.Equipped(Charm.FragileStrength)) {
+					baseDMG += 4 * baseDMG / 3;
+				} else if (CharmData.Equipped(Charm.UnbreakableStrength)) {
+					baseDMG += 3 * baseDMG / 4;
+				}
+			}			
 
 			switch (n) {
 				//case DamageType.Slash: baseDMG = (int) (this.nmg.Mult(n) * baseDMG); break;
@@ -180,6 +189,20 @@ namespace CharmCrab.Charms {
 			if (d != null) {				
 				d.SoulCatchDmg();
 			}
+		}
+
+		public int OnPlayerSetInt(string target, int orig) {
+			if (target == "geo") {
+				int old = PlayerData.instance.GetInt("geo");
+				if (GameManager.instance.playerData.GetBool("equippedCharm_24") && !GameManager.instance.playerData.GetBool("brokenCharm_24")) {
+					if (orig - old > 0) {
+						orig = old + (orig - old) * 3;
+					}					
+				}
+			}
+
+
+			return orig;
 		}
 
 		public void SlashHitHandler(Collider2D col, GameObject slash) {
@@ -260,6 +283,36 @@ namespace CharmCrab.Charms {
 						obj.AddComponent<QuakeCollider>();
 					}
 				}
+			}
+		}
+
+		public int OnSoulGain(int num) {
+			// This just undoes what the built-in Soul gain calculations do based off of charms. This is so the soul
+			// gain from Soul Catcher/Eater isn't ridiculous with their new effects. This information comes directly from
+			// the default code in the game.
+			if (PlayerData.instance.GetInt("MPCharge") < PlayerData.instance.GetInt("maxMP")) {
+				if (PlayerData.instance.GetBool("equippedCharm_20")) {
+					num -= 3;
+				}
+				if (PlayerData.instance.GetBool("equippedCharm_21")) {
+					num -= 8;
+				}
+			} else {
+				if (PlayerData.instance.GetBool("equippedCharm_20")) {
+					num -= 2;
+				}
+				if (PlayerData.instance.GetBool("equippedCharm_21")) {
+					num -= 6;
+				}
+			}
+
+			switch (PlayerData.instance.GetInt("nailSmithUpgrades")) {
+				case 0: return 4;
+				case 1: return 6;
+				case 2: return 8;
+				case 3: return 10;
+				case 4: return 12;
+				default: return num/2;
 			}
 		}
 

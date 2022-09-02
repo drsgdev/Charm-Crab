@@ -34,7 +34,7 @@ Note that rebalancing is done over casual play; Knowing which charms are the bes
 - Grubberfly's elegy:          
 - Fragile Heart:               
 - Fragile Strength: Fragile: a 133% dmg increase, but double damage taken. Unbreakable: 75% dmg increase, but you do not take increased damage.
-- Fragile Greed: 
+- Fragile Greed: Increases geo gains by a larger amount, and ever 1.5s you can spend geo to increase your nail damage by that much. This happens automatically, and will increase your nail damage by up to its base amount each time you attack something. So don't get greedy with your nail.
 - Spell Twister: Spell costs no soul, but deal half damage (dmg ratio very likely to change).
 - Steady Body: Has a 25% chance to reduce all damage take to 0.
 - Heavy Blow: Melee attacks inflict the Bleed debuff
@@ -74,9 +74,12 @@ Note that rebalancing is done over casual play; Knowing which charms are the bes
 
 # New Charms
 - Void Tendrils: Converts your shriek into a summon spell for Void Tendrils. Obtained by getting the journey entry for Void Tendrils.
-- Aura of Purity: Turns your shriek into a spell that summons a persistent aura that will damage nearby enemies. This spell will consume all soul, regardless of charms, and damage and duration of this aura depends upon the soul consumed. This spell only interacts with soul catcher.
-- Afflicted Devourer : Charm that causes debuffs to proc regardless of their stacks. So Bleed will cause damage, Soul Eater will deal damage/provide Soul. Does not interact with Soul Catcher or infested.
-- Soul Infused Blade: Causes Nail arts to consume soul (up to a specific amount), and increase damage based off of the soul consumed.
+
+- Aura of Purity: Turns your shriek into a spell that summons a persistent aura that will damage nearby enemies. This spell will consume all soul, regardless of charms, and damage and duration of this aura depends upon the soul consumed. This spell only interacts with soul catcher. Obtained by conversing with Bardoon after obtaining Void Heart.
+
+- Afflicted Devourer : Charm that causes debuffs to proc regardless of their stacks. So Bleed will cause damage, Soul Eater will deal damage/provide Soul. Does not interact with Soul Catcher or infested. Obtained by conversing with the Midwife while having weaverlings (Equipped? You need to trigger the dialogue related to the charm).
+
+- Soul Infused Blade: Causes Nail arts to consume soul (up to a specific amount), and increase damage based off of the soul consumed. Obtained by bringing the fragile flower to Emilitia.
 
 
 # Known Bugs (and planned fixes)
