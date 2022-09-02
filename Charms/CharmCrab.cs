@@ -14,6 +14,7 @@ using HutongGames;
 using HutongGames.PlayMaker;
 using HutongGames.PlayMaker.Actions;
 using SFCore;
+using Vasi;
 
 namespace CharmCrab {
 
@@ -21,7 +22,7 @@ namespace CharmCrab {
 		
 		public const int BossDamage = 2;
 		public const int SuperBossDamage = 3;
-		public const int SuperHealthScaleFactor = 10;
+		public const int SuperHealthScaleFactor = 5;
 		public const int HealthScaleFactor = 5;
 		public const int BossHealthThreshold = 65;		
 		public const int SuperBossHealthThreshold = 500;
@@ -132,6 +133,7 @@ namespace CharmCrab {
 
 		private bool OnEnemyEnable(GameObject obj, bool isdead) {
 			if (obj.GetComponent<EnemyStats>() == null) {
+				//Modding.Logger.Log("Statifying: " + obj.name);
 				var stats = obj.AddComponent<EnemyStats>();
 				var hm = obj.GetComponent<HealthManager>();
 				stats.origHp = hm.hp;
@@ -312,6 +314,24 @@ namespace CharmCrab {
 		private class EnemyStats: MonoBehaviour {
 			public int origHp = 1;
 
+			//private int lastValue = 0;
+
+
+			public void OnDisable() {
+
+			}
+
+			public void OnEnable() {
+				if (this.name.Contains("Fluke Fly Spawner")) {
+					var fsm = FSMUtility.LocateFSM(this.gameObject, "Fluke Fly");
+
+					if (fsm != null) {
+						// Special case for recycled fluke spawners in Fluke Marm's arena.
+						FsmUtil.GetAction<SetHP>(FsmUtil.GetState(fsm, "Reset")).hp = 5 * 13;
+					}
+				}
+			}
+
 			public void Update() {
 				if (this.origHp >= SuperBossHealthThreshold) {
 					foreach (var d in this.GetComponentsInChildren<DamageHero>()) {
@@ -322,6 +342,13 @@ namespace CharmCrab {
 						d.damageDealt = BossDamage;
 					}
 				}
+
+				/*
+				if (this.GetComponent<HealthManager>()?.hp != this.lastValue) {
+					Modding.Logger.Log("Health value (" + this.name + ")" + this.GetComponent<HealthManager>()?.hp);
+					this.lastValue = (int) this.GetComponent<HealthManager>()?.hp;
+				}
+				*/
 			}
 		}
 	}	

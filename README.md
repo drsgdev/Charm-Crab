@@ -18,7 +18,14 @@ damage scaling, and upgrading your nail also affects your spells. So old, somewh
 
 Some rebalances of note is enemy health, as damage is much higher than before, and thus is much higher. Base soul gain has also been nerfed, and this includes the base soul gain while wearing Soul Catcher/Eater so soul has more complex mechanics to be gathered quickly. The goal of this is accomodate builds that care about soul and builds that don't; Soul while useful for healing will be harder to gather by default but some changed charms accomodate healing so focusing isn't a primary healing methodology but is still useful in cases.
 
-Note that rebalancing is done over casual play; Knowing which charms are the best and knowing how to get certain charm very early are not balanced around. So becoming overpowered for some early stuff by ignoring it and collecting strong charms will not be nerfed. This is due to how the game can be traversed in creative and arguable valid ways (or just in many different ways by default).
+Note that rebalancing is done over casual play; Knowing which charms are the best and knowing how to get certain charm very early are not balanced around. So becoming overpowered for some early stuff by ignoring it and collecting strong charms will not be nerfed. This is due to how the game can be traversed in creative and arguably valid ways (or just in many different ways by default).
+
+Other changes of note are as follows:
+
+- Soul gain on the nail is nerfed, but scales as you upgrade your nail.
+- Spells scale with nail upgrades
+- Many bosses have increase damage, but some damage is vanilla.
+- New enemy health values.
 
 # Charm changes
 
@@ -83,4 +90,5 @@ Note that rebalancing is done over casual play; Knowing which charms are the bes
 
 
 # Known Bugs (and planned fixes)
-- Hornet: Not all damage is boss-damage
+- Hornet: Not all damage is boss-damage (also other bosses which spawn projectiles)
+- Recycled enemies don't revert the maximum health.
