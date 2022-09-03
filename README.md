@@ -88,7 +88,10 @@ Other changes of note are as follows:
 
 - Soul Infused Blade: Causes Nail arts to consume soul (up to a specific amount), and increase damage based off of the soul consumed. Obtained by bringing the fragile flower to Emilitia.
 
-
 # Known Bugs (and planned fixes)
 - Hornet: Not all damage is boss-damage (also other bosses which spawn projectiles)
 - Recycled enemies don't revert the maximum health.
+
+# Art Credits
+
+Credits for new Charm Icons go to [Endermint](https://www.twitch.tv/endermint)

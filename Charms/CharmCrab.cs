@@ -314,12 +314,6 @@ namespace CharmCrab {
 		private class EnemyStats: MonoBehaviour {
 			public int origHp = 1;
 
-			//private int lastValue = 0;
-
-
-			public void OnDisable() {
-
-			}
 
 			public void OnEnable() {
 				if (this.name.Contains("Fluke Fly Spawner")) {
@@ -342,13 +336,6 @@ namespace CharmCrab {
 						d.damageDealt = BossDamage;
 					}
 				}
-
-				/*
-				if (this.GetComponent<HealthManager>()?.hp != this.lastValue) {
-					Modding.Logger.Log("Health value (" + this.name + ")" + this.GetComponent<HealthManager>()?.hp);
-					this.lastValue = (int) this.GetComponent<HealthManager>()?.hp;
-				}
-				*/
 			}
 		}
 	}	

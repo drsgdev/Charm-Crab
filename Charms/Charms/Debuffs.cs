@@ -95,9 +95,10 @@ namespace CharmCrab.Charms {
 
 		private class SoulCatcher {
 			public readonly float DecayRate = 12;
+			public readonly float TwisterDecayRate = 24;
 			public readonly float Transferrence = 0.25f;
 			private float dmgApplied = 0;
-			private HealthManager hm;
+			private readonly HealthManager hm;
 
 			public SoulCatcher(HealthManager hm) {
 				this.hm = hm;
@@ -108,7 +109,14 @@ namespace CharmCrab.Charms {
 			}
 
 			public void Update() {
-				this.dmgApplied -= (DecayRate * Time.deltaTime);
+				var rate = DecayRate;
+
+				if (CharmData.Equipped(Charm.SpellTwister) || CharmData.Equipped(Charm.ShamanStone)) {
+					rate = TwisterDecayRate;
+				}
+
+				this.dmgApplied -= (rate * Time.deltaTime);
+
 				if (dmgApplied < 0) {
 					this.dmgApplied = 0;
 				}
@@ -119,6 +127,7 @@ namespace CharmCrab.Charms {
 			}
 
 			private HitInstance GenHit() {
+				
 				int dmg = (int)(this.dmgApplied * Transferrence);
 				var hit = new HitInstance() {
 					DamageDealt = dmg,
@@ -246,6 +255,7 @@ namespace CharmCrab.Charms {
 			private float delay = 0;
 
 			public void Update() {
+				/*
 				this.delay += Time.deltaTime;
 
 				if (this.delay >= DecayDelay) {
@@ -260,6 +270,7 @@ namespace CharmCrab.Charms {
 					this.stacks = Math.Max(0, this.stacks);
 					this.ticks = Math.Max(0, this.ticks);
 				}
+				*/
 			}
 
 			public void Stack() {

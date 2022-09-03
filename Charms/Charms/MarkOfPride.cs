@@ -6,7 +6,8 @@ using UnityEngine;
 namespace CharmCrab.Charms {
 
 	class MarkOfPride {
-		private readonly float ResetTime = 5;
+		private readonly int DamageScale = 3;
+		private readonly float ResetTime = 30;
 		private int stacks = 0;
 		private float timeSinceLast = 0;
 		public void Start() { }
@@ -25,13 +26,7 @@ namespace CharmCrab.Charms {
 		public int DmgBonus {
 			get {
 				if (PlayerData.instance.GetBool("equippedCharm_13")) {
-					return this.stacks;
-					/*
-					int dmg = 1 + PlayerData.instance.nailSmithUpgrades;
-					int mult = this.stacks / 5;
-
-					return dmg * mult;
-					*/
+					return DamageScale * this.stacks * (2 + PlayerData.instance.GetInt("nailSmithUpgrades"));
 				}
 				return 0;
 			}

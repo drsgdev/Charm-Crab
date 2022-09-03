@@ -234,9 +234,9 @@ namespace CharmCrab.Charms {
 				dmg = 0;
 			}
 
-			if (CharmData.Equipped(Charm.FragileStrength)) {
-				dmg *= 2;
-			}
+			//if (CharmData.Equipped(Charm.FragileStrength)) {
+			//	dmg *= 2;
+			//}
 
 			//Modding.Logger.Log("dmg = " + dmg);
 
@@ -276,13 +276,18 @@ namespace CharmCrab.Charms {
 			if (obj.name == "Hit L" || obj.name == "Hit R" || obj.name == "Hit U" || obj.name == "Hit D") {
 				var parent = obj.transform.parent;
 				if (parent != null) {
-					if (parent.name == "Scr Heads 2") {
+					if (parent.name == "Scr Heads 2" || parent.name == "Scr Heads") {
 						obj.AddComponent<WraithCollider>();
 					}
+
 					if (parent.name == "Q Slam 2" || parent.name == "Q Mega") {
 						obj.AddComponent<QuakeCollider>();
 					}
 				}
+			}
+
+			if (obj.name == "Q Fall Damage") {
+				obj.AddComponent<QuakeCollider>();
 			}
 		}
 

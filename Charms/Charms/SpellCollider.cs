@@ -26,7 +26,7 @@ namespace CharmCrab.Charms {
 		}
 
 		public void OnTriggerEnter2D(Collider2D col) {
-			var cc = CharmData.Equipped(Charm.SoulEater);
+			var cc = CharmData.Equipped(Charm.SoulCatcher);
 			var ce = CharmData.Equipped(Charm.SoulEater);
 			if (cc || ce) {
 				var h = col.gameObject.GetComponent<HealthManager>();
@@ -47,7 +47,7 @@ namespace CharmCrab.Charms {
 		}
 
 		public void OnCollisionEnter2D(Collision2D col) {
-			var cc = CharmData.Equipped(Charm.SoulEater);
+			var cc = CharmData.Equipped(Charm.SoulCatcher);
 			var ce = CharmData.Equipped(Charm.SoulEater);
 			if (cc || ce) {
 				var h = col.gameObject.GetComponent<HealthManager>();
