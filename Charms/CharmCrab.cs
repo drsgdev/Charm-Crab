@@ -22,7 +22,7 @@ namespace CharmCrab {
 		
 		public const int BossDamage = 2;
 		public const int SuperBossDamage = 3;
-		public const int SuperHealthScaleFactor = 5;
+		public const int SuperHealthScaleFactor = 10;
 		public const int HealthScaleFactor = 5;
 		public const int BossHealthThreshold = 65;		
 		public const int SuperBossHealthThreshold = 500;
@@ -73,7 +73,7 @@ namespace CharmCrab {
 		public CharmCrab() : base("Charm Crab") { }
 
 		public override string GetVersion() {
-			return "0.1";
+			return "1.0.1";
 		}
 
 		public override void Initialize() {
@@ -142,6 +142,8 @@ namespace CharmCrab {
 					// Special case to prevent the hollow shade from having thousands of health inadvertently and doing super boss damage.
 					hm.hp = PlayerData.instance.maxHealth / 2 * Charms.CharmEffects.instance.ComputeDamage(DamageType.Slash);
 					stats.origHp = hm.hp;
+				} else if (obj.name == "Blocker") {
+					hm.hp = 40;
 				} else {
 					if (hm.hp >= SuperBossHealthThreshold) {
 						hm.hp *= SuperHealthScaleFactor;

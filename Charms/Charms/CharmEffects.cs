@@ -70,6 +70,7 @@ namespace CharmCrab.Charms {
 			StartCoroutine(this.UpdateCostsPeriodically());
 		}
 		public void Update() {
+			this.steady.Update();
 			this.womb.Update();
 			this.bleed.Update();
 			this.pride.Update();

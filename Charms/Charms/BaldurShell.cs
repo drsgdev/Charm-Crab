@@ -58,14 +58,12 @@ namespace CharmCrab.Charms {
 				var effects = HeroController.instance.gameObject.transform.Find("Charm Effects");
 				blocker = effects.gameObject.transform.Find("Blocker Shield").gameObject;
 				fsm = FSMUtility.LocateFSM(blocker, "Control");
-				var hitState = FsmUtil.GetState(fsm, "Blocker Hit");
 
+				//var hitState = FsmUtil.GetState(fsm, "Blocker Hit");
 				//FsmUtil.ChangeTransition(hitState, "2", "HUD 1");
 				//FsmUtil.ChangeTransition(hitState, "3", "HUD 1");
 				//FsmUtil.RemoveAction<IntCompare>(hitState);
 				//FsmUtil.AddMethod(hitState, () => { if (PlayerData.instance.blockerHits == 1) { PlayerData.instance.blockerHits += 1; } } );
-
-				
 			}
 		}
 

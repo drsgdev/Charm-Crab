@@ -247,35 +247,16 @@ namespace CharmCrab.Charms {
 
 		private class Infested {
 			public readonly int SoulPerStack = 15;
-			public readonly float Decay = 1;
 			public readonly float StackThreshold = 10;
-			public readonly float DecayDelay = 2;
 			private float stacks = 0;
 			private float ticks = 0;
-			private float delay = 0;
 
 			public void Update() {
-				/*
-				this.delay += Time.deltaTime;
 
-				if (this.delay >= DecayDelay) {
-
-					this.ticks -= Time.deltaTime / Decay;
-
-					if (this.ticks < 0) {
-						this.stacks -= Time.deltaTime / Decay;
-					}
-
-
-					this.stacks = Math.Max(0, this.stacks);
-					this.ticks = Math.Max(0, this.ticks);
-				}
-				*/
 			}
 
 			public void Stack() {
 				this.ticks += 1;
-				this.delay = 0;
 
 				if (this.ticks >= StackThreshold) {
 					this.stacks += 1;

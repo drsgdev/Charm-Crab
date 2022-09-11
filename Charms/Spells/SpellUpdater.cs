@@ -55,15 +55,19 @@ namespace CharmCrab.Spells {
 		private class FireballSwitch: FsmObject {
 			
 			public FireballSwitch() {
-				var switchstate = FsmUtil.GetState(HeroController.instance.spellControl, "Level Check");
-				var anticStart = FsmUtil.GetState(HeroController.instance.spellControl, "Fireball Antic");
-				var anticEnd = FsmUtil.GetState(HeroController.instance.spellControl, "Spell End");
+				try {
+					var switchstate = FsmUtil.GetState(HeroController.instance.spellControl, "Level Check");
+					var anticStart = FsmUtil.GetState(HeroController.instance.spellControl, "Fireball Antic");
+					var anticEnd = FsmUtil.GetState(HeroController.instance.spellControl, "Spell End");
 
-				FsmUtil.RemoveAction(switchstate, 0);
-				FsmUtil.AddMethod(switchstate, this.Branch);
+					FsmUtil.RemoveAction(switchstate, 0);
+					FsmUtil.AddMethod(switchstate, this.Branch);
 
-				FsmUtil.InsertMethod(anticStart, 0, () => { Charms.BaldurShell.OpenBlocker(); });
-				FsmUtil.InsertMethod(anticEnd, 0, () => { Charms.BaldurShell.CloseBlocker(); });
+					FsmUtil.InsertMethod(anticStart, 0, () => { Charms.BaldurShell.OpenBlocker(); });
+					FsmUtil.InsertMethod(anticEnd, 0, () => { Charms.BaldurShell.CloseBlocker(); });
+				} catch (Exception ex) {
+					Modding.Logger.LogError("Fireball Switch failed to initialize: " + ex.Message);
+				}
 			}
 			public void Branch() {
 				
@@ -78,17 +82,21 @@ namespace CharmCrab.Spells {
 		private class ShriekSwitch : FsmObject {
 			private FsmState switchstate;
 			public ShriekSwitch() {
-				switchstate = FsmUtil.GetState(HeroController.instance.spellControl, "Level Check 3");
-				var anticStart = FsmUtil.GetState(HeroController.instance.spellControl, "Level Check 3");
-				//var anticEnd = FsmUtil.GetState(HeroController.instance.spellControl, "Spell End");
+				try {
+					switchstate = FsmUtil.GetState(HeroController.instance.spellControl, "Level Check 3");
+					var anticStart = FsmUtil.GetState(HeroController.instance.spellControl, "Level Check 3");
+					//var anticEnd = FsmUtil.GetState(HeroController.instance.spellControl, "Spell End");
 
-				FsmUtil.RemoveAction(switchstate, 0);
-				FsmUtil.AddMethod(switchstate, this.Branch);
+					FsmUtil.RemoveAction(switchstate, 0);
+					FsmUtil.AddMethod(switchstate, this.Branch);
 
-				FsmUtil.InsertMethod(anticStart, 0, () => { Charms.BaldurShell.OpenBlocker(); });
+					FsmUtil.InsertMethod(anticStart, 0, () => { Charms.BaldurShell.OpenBlocker(); });
 
-				this.CreateTendrilPath();
-				this.CreateAuraPath();
+					this.CreateTendrilPath();
+					this.CreateAuraPath();
+				} catch (Exception ex) {
+					Modding.Logger.LogError("Shriek Switch failed to initialize: " + ex.Message);
+				}
 			}
 
 			private void CreateTendrilPath() {
@@ -114,10 +122,6 @@ namespace CharmCrab.Spells {
 				FsmUtil.RemoveAction<SendMessage>(s2);
 				FsmUtil.RemoveAction<CreateObject>(s2);
 				FsmUtil.InsertMethod(s2, 0, this.SpawnAura);
-			}
-
-			private void Testing() {
-				Modding.Logger.Log("This state has been reached");
 			}
 
 			private void SpawnTendrils() {
