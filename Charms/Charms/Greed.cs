@@ -7,12 +7,31 @@ namespace CharmCrab.Charms {
 		private float coolDown = 0;
 		private float activeTime = 0;
 
+		private float shadeDisable = 0;
 
 		public void Update() {
 			this.coolDown = Mathf.Max(this.coolDown - Time.deltaTime, 0);
 			this.activeTime = Mathf.Max(this.activeTime - Time.deltaTime, 0);
+
+			if (PlayerData.instance.soulLimited) {
+				this.shadeDisable = 10;
+			} else {
+				this.shadeDisable = Mathf.Max(this.shadeDisable - Time.deltaTime, 0);
+			}
+			
 		}
 
+		public int GeoBonus(int value) {
+			if (GameManager.instance.playerData.GetBool("equippedCharm_24") && !GameManager.instance.playerData.GetBool("brokenCharm_24")) {
+				if (this.shadeDisable > 0) {
+					return value;
+				} else {
+					return value * 3;
+				}
+			} else {
+				return value;
+			}
+		}
 
 		public int DamageBonus() {
 			if (GameManager.instance.playerData.GetBool("equippedCharm_24") && !GameManager.instance.playerData.GetBool("brokenCharm_24")) {

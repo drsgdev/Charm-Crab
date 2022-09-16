@@ -41,7 +41,7 @@ namespace CharmCrab {
 					Name = "Soul Infused Blade",
 					Cost = 1,
 					Desc = "Infuses Nail Arts with Soul",
-					SpriteName = "Soul Infused Icon",
+					SpriteName = "Soul Nail Icon",
 					EnumValue = global::CharmCrab.NewCharms.SoulInfusedBlade,
 				}
 			},
@@ -133,7 +133,6 @@ namespace CharmCrab {
 
 		private bool OnEnemyEnable(GameObject obj, bool isdead) {
 			if (obj.GetComponent<EnemyStats>() == null) {
-				//Modding.Logger.Log("Statifying: " + obj.name);
 				var stats = obj.AddComponent<EnemyStats>();
 				var hm = obj.GetComponent<HealthManager>();
 				stats.origHp = hm.hp;
@@ -230,6 +229,8 @@ namespace CharmCrab {
         }
 
 		private bool OnSetPlayerBoolHook(string target, bool orig) {
+			//Log(target + " = " + orig);
+			
 			
 			if (target == "killedAbyssTendril" && orig) {
 				Settings.CharmData[global::CharmCrab.NewCharms.VoidTendrils].Obtained = true;

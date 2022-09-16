@@ -23,9 +23,11 @@ namespace CharmCrab.Charms {
 		}
 
 		private void Activate() {
-			this.active = true;
-			this.mpTaken = PlayerData.instance.GetInt("MPCharge");
-			HeroController.instance.TakeMP((int)Math.Min(SoulMax, this.mpTaken));
+			if (CharmCrab.Settings.Equipped(NewCharms.SoulInfusedBlade)) {
+				this.active = true;
+				this.mpTaken = PlayerData.instance.GetInt("MPCharge");
+				HeroController.instance.TakeMP((int)Math.Min(SoulMax, this.mpTaken));
+			}
 		}
 
 		private void Deactivate() {
