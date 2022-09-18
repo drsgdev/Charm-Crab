@@ -104,6 +104,33 @@ namespace CharmCrab {
             }
         }
 
+        public static string Description(Charm c, string orig) {
+            switch (c) {
+                case Charm.GatheringSwarm: return "Whispers its location to the bearer whenever a map is open, allowing wanderers to pinpoint their current location.";
+                case Charm.WaywardCompass: return "A swarm will follow the bearer and gather up any loose Geo.\nUseful for those who can't bear to leave anything behind, no matter how insignificant.";
+                case Charm.GrubSong: return "Contains the gratitude of freed grubs.\nGain SOUL when taking damage.";
+                case Charm.StalwartShell: return "Builds resilience. When recovering from damage, the bearer will remain invulnerable for longer.\nReduces damage taken by one, but not to zero.";
+                case Charm.BaldurShell: return "Protects its bearer with a hard shell while focusing SOUL or casting spells.\nThe shell is not indestructible and will shatter if it absorbs too much damage.";
+                case Charm.Fury: return "Embodies the fury and heroism that comes upon those who are about to die.\nDamage increases as you lose health.";
+                case Charm.LifebloodHeart: return "When resting, the bearer will gain a coating of lifeblood that protects from a modest amount of damage.\nAlso generates lifeblood after sufficient damage has been dealt.";
+                case Charm.Flukenest: return "Living charm born in the gut of a Flukemarm.\nTransforms Vengeful Spirit into a horde of flukes that drain the life for their summoner.";
+                case Charm.MarkOfPride: return "Freely given by the Mantis Tribe to those they respect.\nGreatly increases the range of the bearer's nail, and increases damage as one continues to strike.\nDamage bonus lost on taking damage.";
+                case Charm.SteadyBody: return "Keeps its bearer from recoiling backwards when they strike an enemy with a nail.\nAlso has a chance to reduce damage taken.";
+                case Charm.HeavyBlow: return "Increases the force of the bearer's nail, causing enemies to recoil further when hit.\nAlso inflicts a stacking bleed affliction.";
+                case Charm.SporeShroom: return "When focusing SOUL, emit a spore cloud that slowly damages enemies.\nAlso infests enemies, so they explode with soul when struck by your nail.";
+                case Charm.ShamanStone: return "Massively increases spell damage, at increased cost of SOUL.";
+                case Charm.SoulCatcher: return "Causes your spell damage to linger on enemies, and erupt when struck by your nail.";
+                case Charm.SoulEater: return "Afflicts enemies struck by your spells; This affliction slowly drains their vitality and causes you to gain more soul when attacking.";
+                case Charm.FragileGreed: return "Increases the Geo received, but your nail strikes cost Geo while being more powerful should you be able to pay the cost.";
+                case Charm.UnbreakableGreed: return "Increases the Geo received, but your nail strikes cost Geo while being more powerful should you be able to pay the cost.";
+                case Charm.FragileStrength: return "Increase the strength of your nail to a keen edge." + (!PlayerData.instance.GetBool("fragileStrength_unbreakable") ? "However, but you become fragile and take more damage." : "");
+                case Charm.UnbreakableStrength: return "Increase the strength of your nail to a keen edge.";
+                case Charm.NailMaster: return "Increase the reach of your nail arts, while also increasing their potency.";
+                case Charm.SpellTwister: return "Your spells now cost nothing, but their effectiveness is reduced.";
+                default: return orig;
+            }
+        }
+
         public static int Cost(Charm c) {
             switch (c) {
                 case Charm.GatheringSwarm: return 0;

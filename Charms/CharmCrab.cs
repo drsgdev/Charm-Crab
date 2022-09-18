@@ -22,7 +22,7 @@ namespace CharmCrab {
 		
 		public const int BossDamage = 2;
 		public const int SuperBossDamage = 3;
-		public const int SuperHealthScaleFactor = 10;
+		public const int SuperHealthScaleFactor = 7;
 		public const int HealthScaleFactor = 5;
 		public const int BossHealthThreshold = 65;		
 		public const int SuperBossHealthThreshold = 500;
@@ -31,7 +31,7 @@ namespace CharmCrab {
 			{0, new NewCharmData() {
 					Name = "Void Tendrils",
 					Cost = 1,
-					Desc = "Changes your Shriek Spell to Summon Void Tendrils.",
+					Desc = "Changes your Shriek Spell to Summon Void Tendrils. This spell can benefit from some melee charms.",
 					SpriteName = "Tendril Charm Icon",
 					EnumValue = global::CharmCrab.NewCharms.VoidTendrils,
 				}
@@ -40,7 +40,7 @@ namespace CharmCrab {
 			{1, new NewCharmData() {
 					Name = "Soul Infused Blade",
 					Cost = 1,
-					Desc = "Infuses Nail Arts with Soul",
+					Desc = "Causes your nail arts to consume soul to increase their damage.",
 					SpriteName = "Soul Nail Icon",
 					EnumValue = global::CharmCrab.NewCharms.SoulInfusedBlade,
 				}
@@ -49,7 +49,7 @@ namespace CharmCrab {
 			{2, new NewCharmData() {
 					Name = "Afflicted Devourer",
 					Cost = 1,
-					Desc = "Causes afflictions to harm your foe.",
+					Desc = "Causes your nail strikes to proc debuff effects, such as bleeding.",
 					SpriteName = "Devourer Icon",
 					EnumValue = global::CharmCrab.NewCharms.AfflictedDevourer,
 				}
@@ -58,7 +58,7 @@ namespace CharmCrab {
 			{3, new NewCharmData() {
 					Name = "Aura of Purity",
 					Cost = 1,
-					Desc = "Converts your Shriek spell into a variably-lasting aura spell.",
+					Desc = "Converts your Shriek spell into a variably-lasting aura spell that causes Spell Damage. Interacts with some spell charms.",
 					SpriteName = "Pure Aura Icon",
 					EnumValue = global::CharmCrab.NewCharms.PureAura,
 				}
@@ -308,6 +308,9 @@ namespace CharmCrab {
 				int charmNum = int.Parse(key.Split('_')[2]);
 				if (NewCharms.ContainsKey(charmNum)) {
 					return NewCharms[charmNum].Desc;
+				} else {
+					var c = CharmData.Index(charmNum);
+					return CharmData.Description(c, orig);
 				}
 			}
 

@@ -222,6 +222,9 @@ namespace CharmCrab.Charms {
 		}
 
 		public int TakeDamage(ref int hazard, int dmg) {
+			if (dmg == 0) {
+				return 0;
+			}
 			this.pride.TakeDamage(dmg);
 			dmg = this.steady.TakeDamage(ref hazard, dmg);
 			dmg = this.stalwart.TakeDamage(ref hazard, dmg);
@@ -311,10 +314,10 @@ namespace CharmCrab.Charms {
 
 			switch (PlayerData.instance.GetInt("nailSmithUpgrades")) {
 				case 0: return 4;
-				case 1: return 6;
-				case 2: return 8;
-				case 3: return 10;
-				case 4: return 12;
+				case 1: return 5;
+				case 2: return 6;
+				case 3: return 7;
+				case 4: return 10;
 				default: return num/2;
 			}
 		}
