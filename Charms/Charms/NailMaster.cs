@@ -4,6 +4,7 @@ using System.Text;
 
 namespace CharmCrab.Charms {
 	class NailMaster {
+
 		public float Mult(DamageType n) {
 			if (PlayerData.instance.GetBool("equippedCharm_26")) {
 				switch (n) {

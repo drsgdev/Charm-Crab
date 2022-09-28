@@ -6,6 +6,11 @@ namespace CharmCrab.Charms {
 	class Fury {
 		public readonly float MaxMult = 1.5f;
 		public readonly float MultPerMask = 0.25f;
+
+		public int DamageBonus(int i) {
+			return (int) (i * this.Mult);
+		}
+
 		public float Mult {
 			get {
 				if (PlayerData.instance.GetBool("equippedCharm_6")) {

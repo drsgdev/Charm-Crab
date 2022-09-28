@@ -33,12 +33,12 @@ namespace CharmCrab.Charms {
 			}
 		}
 
-		public int DamageBonus() {
+		public int DamageBonus(int i) {
 			if (GameManager.instance.playerData.GetBool("equippedCharm_24") && !GameManager.instance.playerData.GetBool("brokenCharm_24")) {
 				if (this.activeTime > 0) {
 					int baseDMG = CharmEffects.BaseNailDamage();
 					int bonus = Mathf.Min(baseDMG, PlayerData.instance.GetInt("geo"));
-					return bonus;
+					return i + bonus;
 				} else if (this.coolDown <= 0) {
 					this.coolDown = COOLDOWN;
 					this.activeTime = ACTIVE;
@@ -50,11 +50,11 @@ namespace CharmCrab.Charms {
 						HeroController.instance.TakeGeo(bonus);
 					}
 
-					return bonus;
+					return i + bonus;
 				}
 			}
 
-			return 0;
+			return i;
 		}
 	}
 }

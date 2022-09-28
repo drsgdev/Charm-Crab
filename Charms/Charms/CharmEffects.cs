@@ -120,8 +120,8 @@ namespace CharmCrab.Charms {
 			}
 
 			if (IsNailDamage(n)) {
-				baseDMG += this.pride.DmgBonus;
-				baseDMG += this.greed.DamageBonus();
+				baseDMG = this.pride.DamageBonus(baseDMG);
+				baseDMG = this.greed.DamageBonus(baseDMG);
 				if (CharmData.Equipped(Charm.FragileStrength)) {
 					baseDMG += 3 * baseDMG / 4;
 				} else if (CharmData.Equipped(Charm.UnbreakableStrength)) {
@@ -154,7 +154,7 @@ namespace CharmCrab.Charms {
 				default: break;
 			}
 
-			baseDMG = (int)(baseDMG * this.fury.Mult);
+			baseDMG = this.fury.DamageBonus(baseDMG);
 			baseDMG = this.dreamWielder.Damage(baseDMG);
 			return baseDMG;
 		}

@@ -74,7 +74,7 @@ Other changes of note are as follows:
 - Shape of Unn: Costs 0
 - NMG: Increases Art damage also
 - Weaversong: Increased damage and can proc some melee effects (like bleed).
-- Dream Wielder:
+- Dream Wielder: Buffs the Knight's damage on strick (50% for 10s)
 - Dreamshield: Increase Shield count for nail upgrade lvl (Not yet implemented)
 - Grimm Child: Increase Damage, and revamp scaling
 - Carefree Melody: Convert to support minion (Not yet implemented)

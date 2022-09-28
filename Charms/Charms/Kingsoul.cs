@@ -6,21 +6,22 @@ using Vasi;
 
 namespace CharmCrab.Charms {
 	class Kingsoul {
-		public readonly int SoulCharge = 1;
-		public readonly int VoidCharge = 2;
-		public readonly float TickTime = 4;
+		public static readonly int SoulCharge = 1;
+		public static readonly int VoidCharge = 2;
+		public static readonly float TickTime = 4;
 		private PlayMakerFSM fsm;
-		private float time = 0;
+		private Cooldown cd = new Cooldown(TickTime);
+
 		public void Update() {
-			this.time += Time.deltaTime;
+			this.cd.Update();
 			if (this.fsm == null) {
 				var effects = HeroController.instance.gameObject.transform.Find("Charm Effects").gameObject;
 				this.fsm = FSMUtility.LocateFSM(effects, "White Charm");
 				FsmUtil.RemoveTransition(FsmUtil.GetState(this.fsm, "Check"), "Active");
 			} else {
 				if (PlayerData.instance.GetBool("equippedCharm_36")) {
-					if (this.time >= TickTime) {
-						this.time = 0;
+					if (this.cd.Available) {
+						this.cd.Reset();
 						if (PlayerData.instance.gotShadeCharm) {
 							HeroController.instance.AddMPCharge(VoidCharge);
 						} else {
@@ -30,11 +31,9 @@ namespace CharmCrab.Charms {
 
 					}
 				} else {
-					this.time = 0;
+					this.cd.Reset();
 				}
-			}
-
-			
+			}			
 		}
 	}
 

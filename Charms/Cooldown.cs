@@ -13,7 +13,7 @@ namespace CharmCrab {
 		}
 
 		public void Update() {
-			this.cd = Mathf.Max(this.cd - Time.deltaTime, 0);
+			this.cd = this.cd - Time.deltaTime;
 		}
 
 		public void Reset() {
@@ -21,7 +21,7 @@ namespace CharmCrab {
 		}
 
 		public bool Available {
-			get { return this.duration == 0; }
+			get { return this.cd <= 0; }
 		}
 	}
 }

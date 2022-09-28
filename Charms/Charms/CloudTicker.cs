@@ -6,9 +6,10 @@ using UnityEngine;
 namespace CharmCrab.Charms {
 	public class CloudTicker : MonoBehaviour {
 		public List<GameObject> enemyList = new List<GameObject>();
-		private float damageInterval = 0.5f;
-		private float timer = 0;
+		private static readonly float DMG_INTERVAL = 0.5f;
 		private int damageAmt = 1;
+
+		private Cooldown cd = new Cooldown(DMG_INTERVAL);
 
 		private Action<GameObject> onDamage = (a) => { };
 
@@ -37,15 +38,15 @@ namespace CharmCrab.Charms {
 		}
 
 		private void Update() {
-			this.timer += Time.deltaTime;
-			if (this.timer >= this.damageInterval) {
+			this.cd.Update();
+			if (this.cd.Available) {
 				//Modding.Logger.Log("Waffles");
 
 				foreach (var enemy in this.enemyList) {
 					enemy.GetComponent<HealthManager>().ApplyExtraDamage(this.damageAmt);
 					this.onDamage(enemy);
 				}
-				this.timer = 0;
+				this.cd.Reset();
 			}
 		}
 
@@ -65,10 +66,8 @@ namespace CharmCrab.Charms {
 		}
 
 		public void SetDamageInterval(float newInterval) {
-			this.damageInterval = newInterval;
+			this.cd = new Cooldown(newInterval);
 		}
-
-		
 
 
 	}

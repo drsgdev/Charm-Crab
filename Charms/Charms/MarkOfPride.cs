@@ -23,13 +23,11 @@ namespace CharmCrab.Charms {
 			get { return this.stacks; }
 		}
 
-		public int DmgBonus {
-			get {
+		public int DamageBonus(int i) {
 				if (PlayerData.instance.GetBool("equippedCharm_13")) {
-					return DamageScale * this.stacks * (2 + PlayerData.instance.GetInt("nailSmithUpgrades"));
+					return i + DamageScale * this.stacks * (2 + PlayerData.instance.GetInt("nailSmithUpgrades"));
 				}
-				return 0;
-			}
+				return i;
 		}
 
 		public void TakeDamage(int i) {

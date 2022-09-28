@@ -6,9 +6,10 @@ using Vasi;
 namespace CharmCrab.Charms {
 	class DreamWielder {
 		public static readonly float MULT = 1.5f;
+		public static readonly float DURATION = 10;
 
 		// Cooldown being used a duration tool. Check for !Available to see if it's active.
-		private Cooldown cd = new Cooldown(5f);
+		private Cooldown cd = new Cooldown(DURATION);
 
 		public void Update() {
 			this.cd.Update();
