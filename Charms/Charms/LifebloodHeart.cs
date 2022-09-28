@@ -7,7 +7,7 @@ using Vasi;
 namespace CharmCrab.Charms {	
 	class LifebloodHeart {
 		public readonly uint MAX_HEALTH = 4;
-		public readonly uint THRESHOLD = 15;
+		public readonly uint THRESHOLD = 10;
 		private int hits = 0;
 		//private Functions.HitDetectManager hit = new Functions.HitDetectManager(0.5f);
 
@@ -35,7 +35,10 @@ namespace CharmCrab.Charms {
 			if (PlayerData.instance.healthBlue >= MAX_HEALTH) { return; }
 			if (col.gameObject.GetComponent<HealthManager>()) {
 				this.hits += 1;
-				if (this.hits >= THRESHOLD) {
+				if (CharmData.Equipped(Charm.LifebloodCore) && this.hits >= THRESHOLD) {
+					this.Heal();
+					this.hits = 0;
+				} else if (CharmData.Equipped(Charm.LifebloodHeart) && this.hits >= 2*THRESHOLD) {
 					this.Heal();
 					this.hits = 0;
 				}

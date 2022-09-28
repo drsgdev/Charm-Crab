@@ -36,6 +36,7 @@ namespace CharmCrab.Charms {
 		private InfusedBlade infused;
 		private StalwartShell stalwart;
 		private Greed greed;
+		private DreamWielder dreamWielder;
 
 		private Functions.HitDetectManager hit;
 
@@ -66,6 +67,7 @@ namespace CharmCrab.Charms {
 			this.quake = new Quake();
 			this.wraith = new Wraith();
 			this.grimmchild = new GrimmChild();
+			this.dreamWielder = new DreamWielder();
 
 			StartCoroutine(this.UpdateCostsPeriodically());
 		}
@@ -84,6 +86,7 @@ namespace CharmCrab.Charms {
 			this.hit.Update();
 			this.flukes.Update();
 			this.greed.Update();
+			this.dreamWielder.Update();
 		}
 
 		public static int BaseNailDamage() {
@@ -152,6 +155,7 @@ namespace CharmCrab.Charms {
 			}
 
 			baseDMG = (int)(baseDMG * this.fury.Mult);
+			baseDMG = this.dreamWielder.Damage(baseDMG);
 			return baseDMG;
 		}
 
@@ -204,21 +208,24 @@ namespace CharmCrab.Charms {
 		}
 
 		public void SlashHitHandler(Collider2D col, GameObject slash) {
-			if (!this.hit.Hit(col.gameObject)) {
-				this.bleed.SlashHitHandler(col, slash);
-				this.joni.SlashHitHandler(col, slash);
-				SpellCollider.Apply(col.gameObject);
-				this.SoulCatcherDamage(col.gameObject);
+			var hm = col.gameObject.GetComponent<HealthManager>();
+			if (hm != null && !hm.IsInvincible) {
+				if (!this.hit.Hit(col.gameObject)) {
+					this.bleed.SlashHitHandler(col, slash);
+					this.joni.SlashHitHandler(col, slash);
+					SpellCollider.Apply(col.gameObject);
+					this.SoulCatcherDamage(col.gameObject);
 
-				var d = col.gameObject.GetComponent<Debuffs>();
-				if (d != null) {
-					d.InfestAttack();
-					if (CharmCrab.Settings.Equipped(NewCharms.AfflictedDevourer)) {
-						d.Devourer();
+					var d = col.gameObject.GetComponent<Debuffs>();
+					if (d != null) {
+						d.InfestAttack();
+						if (CharmCrab.Settings.Equipped(NewCharms.AfflictedDevourer)) {
+							d.Devourer();
+						}
 					}
-				}				
+				}
+				this.hit.Register(col.gameObject);
 			}
-			this.hit.Register(col.gameObject);
 		}
 
 		public int TakeDamage(ref int hazard, int dmg) {
@@ -265,8 +272,14 @@ namespace CharmCrab.Charms {
 		}
 
 		public void OnColliderCreate(GameObject obj) {
-			
-			if (obj.name == "Fireball2 Spiral(Clone)") {
+			if (obj.name == "Hitbox") {
+				var fsm = FSMUtility.LocateFSM(obj, "Send Event");
+				var state = FsmUtil.GetState(fsm, "Send Event");
+				FsmUtil.AddMethod(state, this.dreamWielder.DreamWielderAction);
+			}
+
+			// Possible names Fireball2 Sprial(Clone) and Fireball(Clone).
+			if (obj.name.Contains("Fireball")) {
 				obj.AddComponent<FireballCollider>();
 			}
 
@@ -352,6 +365,8 @@ namespace CharmCrab.Charms {
 				}
 			} else if (owner.GameObject.name == "Sharp Shadow") {
 				hitInst.DamageDealt = this.ComputeDamage(DamageType.SharpShadow);
+			} else if (hitInst.Source.name.Contains("Grubberfly Beam")) {
+				hitInst.DamageDealt = this.ComputeDamage(DamageType.Slash) / 2;
 			} else {
 				//Log("Hit source name: " + owner.GameObject.name);
 			}
