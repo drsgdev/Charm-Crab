@@ -9,6 +9,15 @@ SFCore through Scarab. (For now manual installation) In Scarab click on "Open Mo
 # Interactivity with other Mods.
 This mod doesn't attempt to play nicely with other overhaul mods, but can work with other mods, such as randomizer, which do not make complex changes to Player FSM and various variable manipulations.
 
+# Gameplay Guide
+Since this mod changes a few things, trying to play it like the vanilla game may get frustrating if you try to bash your head into a few walls. So in this section we'll go over a few things to keep in mind as you play.
+
+- This is not a challenge mod; Somethings are more difficult to accomodate the fact they are not required very early. If you're having difficulty choose one of the different paths to progress the game. The changes are also integrated with the new charm mechanics, and designed to work well with what is available at the time; You will never be required to do +0 bosses that take 10 minutes or more.
+- False Knight is not required, and is more difficult in the beginning. Use the fact you can break the wall to progress without the need to defeat them at +0 if they are giving you trouble. 
+- Dung Defender is only required for Isma's; DD is quite a bit more difficult at +0 and few upgrades, however keep in mind there are *three* ways into the City of Tears, both providing upgrades and other goodies as you explore. Alternative paths are C-Dash+Claw and going above Salubra and getting the tram pass, both of which also allow access to Resting Grounds and City of Tears.
+- Make sure to use defensive charms if the increased boss damage is giving you a hard time. The increased boss damage is not meant to be a *hard mode*. There is nothing in the mod intended to be hard, but rather motivate you trying alternative routes (as there are many in this game).
+- Explore a lot; The rebalancing of enemies are designed for the charms and not intended to be a *hard mode*. If you do not take advantage of the knowledge you have and explore you will be put into very challenging situations. They are doable if you know the bosses well, and don't require you to defeat any boss hitless or is unreasonable at +0, but is relatively harder than the base game.
+
 # Overview of changes:
 
 General changes are modified charm mechanics, rebalances to accomodate the heavy changes, and some new 

@@ -120,7 +120,7 @@ namespace CharmCrab.Charms {
 				baseDMG += this.pride.DmgBonus;
 				baseDMG += this.greed.DamageBonus();
 				if (CharmData.Equipped(Charm.FragileStrength)) {
-					baseDMG += 4 * baseDMG / 3;
+					baseDMG += 3 * baseDMG / 4;
 				} else if (CharmData.Equipped(Charm.UnbreakableStrength)) {
 					baseDMG += 3 * baseDMG / 4;
 				}

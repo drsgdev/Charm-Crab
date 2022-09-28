@@ -31,7 +31,7 @@ namespace CharmCrab.Charms {
 		}
 
 		public void SlashHitHandler(Collider2D col, GameObject slash) {
-			if (!CharmData.Equipped(Charm.LifebloodHeart)) { return; }
+			if (!CharmData.Equipped(Charm.LifebloodHeart) && !CharmData.Equipped(Charm.LifebloodCore)) { return; }
 			if (PlayerData.instance.healthBlue >= MAX_HEALTH) { return; }
 			if (col.gameObject.GetComponent<HealthManager>()) {
 				this.hits += 1;

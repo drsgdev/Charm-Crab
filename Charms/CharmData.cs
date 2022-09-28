@@ -140,8 +140,8 @@ namespace CharmCrab {
                 case Charm.BaldurShell: return 1;
                 case Charm.Fury: return 3;
                 case Charm.QuickFocus: return 1;
-                case Charm.LifebloodHeart: return 3;
-                case Charm.LifebloodCore: return 1;
+                case Charm.LifebloodHeart: return 2;
+                case Charm.LifebloodCore: return 2;
                 case Charm.DefenderCrest: return 1;
                 case Charm.Flukenest: return 1;
                 case Charm.Thorns: return 1;

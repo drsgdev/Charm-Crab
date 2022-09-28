@@ -208,7 +208,12 @@ namespace CharmCrab.Charms {
 				if (this.stacks == 0) {
 					return;
 				}
-				hm.Hit(this.GenHit(stacks));
+				//hm.Hit(this.GenHit(stacks));
+				hm.ApplyExtraDamage(this.GenHit(stacks).DamageDealt);
+				var flash = hm.gameObject.GetComponent<SpriteFlash>();
+				if (flash != null) {
+					flash.flashInfected();
+				}
 			}
 
 			public void Update() {
@@ -233,12 +238,13 @@ namespace CharmCrab.Charms {
 				int dmg = ((int)stacks) * (1 + PlayerData.instance.nailSmithUpgrades);
 				var hit = new HitInstance() {
 					DamageDealt = dmg,
-					AttackType = AttackTypes.Spell,
+					AttackType = AttackTypes.Generic,
 					Direction = 0,
 					CircleDirection = false,
 					Source = HeroController.instance.gameObject,
 					Multiplier = 1.0f,
 					IgnoreInvulnerable = true,
+					IsExtraDamage = true
 				};
 
 				return hit;
