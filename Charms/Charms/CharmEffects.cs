@@ -199,7 +199,9 @@ namespace CharmCrab.Charms {
 		public int OnPlayerSetInt(string target, int orig) {
 			if (target == "geo") {
 				int old = PlayerData.instance.GetInt("geo");
-				if (!PlayerData.instance.soulLimited && (CharmData.Equipped(Charm.FragileGreed) || CharmData.Equipped(Charm.UnbreakableGreed))) {
+				if (orig < old) {
+					return orig;	
+				} else if (!PlayerData.instance.soulLimited && (CharmData.Equipped(Charm.FragileGreed) || CharmData.Equipped(Charm.UnbreakableGreed))) {
 					orig = old + this.greed.GeoBonus(orig - old);			
 				}
 			}
