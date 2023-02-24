@@ -15,17 +15,13 @@ using HutongGames.PlayMaker;
 using HutongGames.PlayMaker.Actions;
 using SFCore;
 using Vasi;
+using CharmCrab.Enemy;
 
 namespace CharmCrab {
 
 	class CharmCrab : Mod, ILocalSettings<Settings> {
 		
-		public const int BossDamage = 2;
-		public const int SuperBossDamage = 3;
-		public const int SuperHealthScaleFactor = 7;
-		public const int HealthScaleFactor = 5;
-		public const int BossHealthThreshold = 65;		
-		public const int SuperBossHealthThreshold = 500;
+		
 
 		public static Dictionary<int, NewCharmData> NewCharms = new Dictionary<int, NewCharmData>() {
 			{0, new NewCharmData() {
@@ -132,28 +128,11 @@ namespace CharmCrab {
         }
 
 		private bool OnEnemyEnable(GameObject obj, bool isdead) {
-			if (obj.GetComponent<EnemyStats>() == null) {
-				var stats = obj.AddComponent<EnemyStats>();
-				var hm = obj.GetComponent<HealthManager>();
-				stats.origHp = hm.hp;
-
-				if (obj.name == "Hollow Shade(Clone)") {
-					// Special case to prevent the hollow shade from having thousands of health inadvertently and doing super boss damage.
-					hm.hp = PlayerData.instance.maxHealth / 2 * Charms.CharmEffects.instance.ComputeDamage(DamageType.Slash);
-					stats.origHp = hm.hp;
-				} else if (obj.name == "Blocker") {
-					hm.hp = 40;
-				} else {
-					if (hm.hp >= SuperBossHealthThreshold) {
-						hm.hp *= SuperHealthScaleFactor;
-					} else if (hm.hp >= BossHealthThreshold) {
-						hm.hp *= HealthScaleFactor;
-					} else {
-						hm.hp *= HealthScaleFactor;
-					}
-				}
+			if (!isdead) {
+				Log("Found Enemy: " + obj.name);
+				Enemy.EnemyHealth.HandleEnemy(obj);
 			}
-
+			
 			return isdead;
         }
 
@@ -315,34 +294,6 @@ namespace CharmCrab {
 			}
 
 			return orig;
-		}
-
-		private class EnemyStats: MonoBehaviour {
-			public int origHp = 1;
-
-
-			public void OnEnable() {
-				if (this.name.Contains("Fluke Fly Spawner")) {
-					var fsm = FSMUtility.LocateFSM(this.gameObject, "Fluke Fly");
-
-					if (fsm != null) {
-						// Special case for recycled fluke spawners in Fluke Marm's arena.
-						FsmUtil.GetAction<SetHP>(FsmUtil.GetState(fsm, "Reset")).hp = 5 * 13;
-					}
-				}
-			}
-
-			public void Update() {
-				if (this.origHp >= SuperBossHealthThreshold) {
-					foreach (var d in this.GetComponentsInChildren<DamageHero>()) {
-						d.damageDealt = SuperBossDamage;
-					}
-				} else if (this.origHp >= BossHealthThreshold) {
-					foreach (var d in this.GetComponentsInChildren<DamageHero>()) {
-						d.damageDealt = BossDamage;
-					}
-				}
-			}
 		}
 	}	
 }

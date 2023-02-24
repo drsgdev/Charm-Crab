@@ -99,7 +99,7 @@ namespace CharmCrab {
                 case 37: return Charm.Sprintmaster;
                 case 38: return Charm.Dreamshield;
                 case 39: return Charm.Weaversong;
-                case 49: return Charm.Grimmchild;
+                case 40: return Charm.Grimmchild;
                 default: throw new ConstraintException("Charm value must be 1 <= x <= 40");
             }
         }

@@ -13,7 +13,7 @@ namespace CharmCrab {
 		}
 
 		public void Update() {
-			this.cd = this.cd - Time.deltaTime;
+			this.cd -= Time.deltaTime;
 		}
 
 		public void Reset() {

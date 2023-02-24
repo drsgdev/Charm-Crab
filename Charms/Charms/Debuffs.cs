@@ -9,6 +9,7 @@ namespace CharmCrab.Charms {
 		private SoulEater seat;
 		private SoulCatcher scatch;
 		private Infested infested;
+		private Cooldown devcd = new Cooldown(10);
 
 
 		public void Disable() {
@@ -20,6 +21,7 @@ namespace CharmCrab.Charms {
 		}
 
 		public void Update() {
+			this.devcd.Update();
 			if (this.seat != null) {
 				this.seat.Update();
 			}
@@ -38,16 +40,20 @@ namespace CharmCrab.Charms {
 		}
 
 		public void Devourer() {
-			if (this.bleed != null) {
-				this.bleed.DealDamage();
-			}
+			if (this.devcd.Available) {
+				if (this.bleed != null) {
+					this.bleed.DealDamage(3);
+					this.bleed.Reset();
+				}
 
-			if (this.seat != null) {
-				this.seat.DealDamage();
-			}
+				if (this.seat != null) {
+					this.seat.DealDamage();
+				}
 
-			if (this.infested != null) {
-				this.infested.Stack();
+				if (this.infested != null) {
+					this.infested.Stack();
+				}
+				this.devcd.Reset();
 			}
 		}
 
@@ -185,7 +191,7 @@ namespace CharmCrab.Charms {
 		}
 
 		private class Bleed {
-			public readonly float DURATION = 5;
+			public readonly float DURATION = 2;
 
 			private uint stacks;
 			private HealthManager hm;
@@ -196,28 +202,41 @@ namespace CharmCrab.Charms {
 			}
 
 			public void Increment() {
-				this.duration = 0;
-				this.stacks += 1;
+				if (!this.hm.IsInvincible) {
+					this.duration = 0;
+					this.stacks += 1;
+				}				
 			}
 
 			public uint Stacks {
 				get { return this.stacks; }
 			}
 
-			public void DealDamage() {
+			public bool DealDamage(int mult=1) {
 				if (this.stacks == 0) {
-					return;
+					return false;
 				}
+
+				if (this.hm.IsInvincible) {
+					return false;
+				}
+
 				//hm.Hit(this.GenHit(stacks));
-				hm.ApplyExtraDamage(this.GenHit(stacks).DamageDealt);
+				var dmg = this.GenHit(stacks).DamageDealt * mult;
+				hm.ApplyExtraDamage(dmg);
 				var flash = hm.gameObject.GetComponent<SpriteFlash>();
 				if (flash != null) {
 					flash.flashInfected();
 				}
+
+				return true;
 			}
 
 			public void Update() {
 				if (this.stacks == 0) {
+					return;
+				}
+				if (this.hm.IsInvincible) {
 					return;
 				}
 
@@ -248,6 +267,11 @@ namespace CharmCrab.Charms {
 				};
 
 				return hit;
+			}
+
+			public void Reset() {
+				this.stacks = 0;
+				this.duration = 0;
 			}
 		}
 

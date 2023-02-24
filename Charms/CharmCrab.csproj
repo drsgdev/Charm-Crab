@@ -6,13 +6,13 @@
 
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\Modding API\Assembly-CSharp.dll</HintPath>
+      <HintPath>D:\Programs\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="MMHOOK_Assembly-CSharp">
-      <HintPath>..\Modding API\MMHOOK_Assembly-CSharp.dll</HintPath>
+      <HintPath>D:\Programs\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\MMHOOK_Assembly-CSharp.dll</HintPath>
     </Reference>
     <Reference Include="MMHOOK_PlayMaker">
-      <HintPath>..\Modding API\MMHOOK_PlayMaker.dll</HintPath>
+      <HintPath>D:\Programs\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\MMHOOK_PlayMaker.dll</HintPath>
     </Reference>
     <Reference Include="PlayMaker">
       <HintPath>D:\Programs\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\PlayMaker.dll</HintPath>
@@ -56,7 +56,7 @@
     <Reference Include="Vasi">
       <HintPath>..\..\..\..\Programs\SteamLibrary\steamapps\common\Hollow Knight\hollow_knight_Data\Managed\Mods\Vasi\Vasi.dll</HintPath>
     </Reference>
-	<EmbeddedResource Include="D:\Documents\Programming\HK-Mage\Resources\assets" />
+	<EmbeddedResource Include="D:\Documents\Programming\Charm-Crab\Assets\build\assets" />
   </ItemGroup>
 
 </Project>

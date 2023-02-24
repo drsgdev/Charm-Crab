@@ -274,6 +274,7 @@ namespace CharmCrab.Charms {
 		}
 
 		public void OnColliderCreate(GameObject obj) {
+			
 			if (obj.name == "Hitbox") {
 				var fsm = FSMUtility.LocateFSM(obj, "Send Event");
 				var state = FsmUtil.GetState(fsm, "Send Event");
@@ -285,7 +286,9 @@ namespace CharmCrab.Charms {
 				obj.AddComponent<FireballCollider>();
 			}
 
-			if (obj.name == "Weaverling(Clone)") {
+			// Weaverling damage hitbox; Make sure it belongs to the weaverlings also.
+			if (obj.name == "Enemy Damager" && obj.transform.parent && obj.transform.parent.name == "Weaverling(Clone)") {
+				//Modding.Logger.Log("Hitbox found for: " + obj.transform.parent);
 				obj.AddComponent<Weaverlings>();
 			}
 
