@@ -38,7 +38,7 @@ namespace CharmCrab.Charms {
 		}
 
 		public void ApplyStack() {
-			stacks =+ 1;
+			stacks += 1;
 			timeSinceLast = 0;
 		}
 
