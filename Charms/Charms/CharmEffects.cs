@@ -213,6 +213,7 @@ namespace CharmCrab.Charms {
 			var hm = col.gameObject.GetComponent<HealthManager>();
 			if (hm != null && !hm.IsInvincible) {
 				if (!this.hit.Hit(col.gameObject)) {
+					this.pride.ApplyStack();
 					this.bleed.SlashHitHandler(col, slash);
 					this.joni.SlashHitHandler(col, slash);
 					SpellCollider.Apply(col.gameObject);
