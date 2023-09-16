@@ -16,6 +16,8 @@ using HutongGames.PlayMaker.Actions;
 using SFCore;
 using Vasi;
 using CharmCrab.Enemy;
+using SFCore.Utils;
+using On.HutongGames.PlayMaker;
 
 namespace CharmCrab {
 
@@ -69,7 +71,7 @@ namespace CharmCrab {
 		public CharmCrab() : base("Charm Crab") { }
 
 		public override string GetVersion() {
-			return "1.0.1";
+			return "1.0.6";
 		}
 
 		public override void Initialize() {
@@ -113,6 +115,42 @@ namespace CharmCrab {
 			ModHooks.SoulGainHook += OnSoulGain;
 
 			UnityEngine.SceneManagement.SceneManager.sceneLoaded += SceneLoaded;
+
+			// For debugging purposes only.
+			//ModHooks.ColliderCreateHook += OnColliderCreateDebug;
+			//ModHooks.SlashHitHook += OnSlashHitDebug;
+		}
+
+		public void OnSlashHitDebug(Collider2D col, GameObject slash)
+		{
+			if (col.gameObject.name.Contains("Spike Ball"))
+			{
+				PlayMakerFSM fsm = col.gameObject.GetComponent<PlayMakerFSM>();
+				int dmg = SFCore.Utils.FsmUtil.GetIntVariable(fsm, "damageDealt").Value;
+				Modding.Logger.Log(dmg);
+
+				foreach (Component m in col.gameObject.GetComponents<Component>())
+				{
+					Modding.Logger.Log(m.GetType());	
+					
+
+				}
+			}
+		}
+
+		public void OnColliderCreateDebug(GameObject obj)
+		{
+			Modding.Logger.Log(obj.name);
+			Modding.Logger.Log(obj.GetType());
+
+			foreach (Component m in obj.GetComponents<Component>())
+			{
+				Modding.Logger.Log(m.GetType());
+				Modding.Logger.Log(m.name);
+			}
+
+			Modding.Logger.Log("----------------------------------------------------------");
+
 		}
 
 		public int OnSoulGain(int num) {
@@ -129,7 +167,6 @@ namespace CharmCrab {
 
 		private bool OnEnemyEnable(GameObject obj, bool isdead) {
 			if (!isdead) {
-				Log("Found Enemy: " + obj.name);
 				Enemy.EnemyHealth.HandleEnemy(obj);
 			}
 			
