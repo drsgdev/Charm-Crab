@@ -217,10 +217,6 @@ namespace CharmCrab.Charms {
 					return false;
 				}
 
-				if (this.hm.IsInvincible) {
-					return false;
-				}
-
 				//hm.Hit(this.GenHit(stacks));
 				var dmg = this.GenHit(stacks).DamageDealt * mult;
 				hm.ApplyExtraDamage(dmg);

@@ -214,7 +214,8 @@ namespace CharmCrab.Charms {
 
 		public void SlashHitHandler(Collider2D col, GameObject slash) {
 			var hm = col.gameObject.GetComponent<HealthManager>();
-			if (hm != null && !hm.IsInvincible) {
+
+			if (hm != null) {
 				if (!this.hit.Hit(col.gameObject)) {
 					this.pride.ApplyStack();
 					this.bleed.SlashHitHandler(col, slash);

@@ -2,18 +2,21 @@
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
+using Modding;
 
 namespace CharmCrab.Charms {
 
 	class MarkOfPride {
-		private readonly int DamageScale = 3;
+		private readonly int DamageScale = 1;
 		private readonly float ResetTime = 30;
 		private int stacks = 0;
 		private float timeSinceLast = 0;
+
+		
 		public void Start() { }
 
 		public void Update() {
-			timeSinceLast += Time.deltaTime;
+			this.timeSinceLast += Time.deltaTime;
 			if (this.timeSinceLast > ResetTime) {
 				this.stacks = 0;
 			}
@@ -38,10 +41,8 @@ namespace CharmCrab.Charms {
 		}
 
 		public void ApplyStack() {
-			stacks += 1;
-			timeSinceLast = 0;
+			this.stacks += 1;
+			this.timeSinceLast = 0;
 		}
-
-
 	}
 }
