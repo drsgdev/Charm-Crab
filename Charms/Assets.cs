@@ -34,6 +34,7 @@ namespace CharmCrab
 					}
 				}
 
+
 				GetCharms();
 				GetSpells();
 			} catch (Exception ex) {
@@ -42,7 +43,8 @@ namespace CharmCrab
 		}
 
 		private void GetCharms() {
-			foreach (var item in CharmCrab.NewCharms) {
+			foreach (var item in CharmCrab.NewCharms)
+			{
 				item.Value.Sprite = ab.LoadAsset<Sprite>(item.Value.SpriteName);
 			}
 		}
