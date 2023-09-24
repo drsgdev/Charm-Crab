@@ -81,8 +81,17 @@ namespace CharmCrab.Enemy {
 				} else {
 					StandardHP(hm);
 				}
+			}			
+		}
+
+		public static void UpdateSpikeBallDamage(GameObject obj)
+		{
+			if (obj.name.Contains("Spike Ball"))
+			{
+				PlayMakerFSM fsm = obj.GetComponent<PlayMakerFSM>();
+				SFCore.Utils.FsmUtil.GetIntVariable(fsm, "damageDealt").Value *= HealthScaleFactor;
+				Modding.Logger.Log("Attemtping Update");
 			}
-			
 		}
 	}
 }

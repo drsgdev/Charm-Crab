@@ -9,7 +9,9 @@ using Vasi;
 using HutongGames.PlayMaker.Actions;
 using HutongGames;
 using HutongGames.PlayMaker;
+using SFCore;
 using System.Reflection;
+using CharmCrab.Enemy;
 
 namespace CharmCrab.Charms {
 	class CharmEffects: MonoBehaviour {
@@ -209,9 +211,11 @@ namespace CharmCrab.Charms {
 			return orig;
 		}
 
+
 		public void SlashHitHandler(Collider2D col, GameObject slash) {
 			var hm = col.gameObject.GetComponent<HealthManager>();
-			if (hm != null && !hm.IsInvincible) {
+
+			if (hm != null) {
 				if (!this.hit.Hit(col.gameObject)) {
 					this.pride.ApplyStack();
 					this.bleed.SlashHitHandler(col, slash);
@@ -228,6 +232,10 @@ namespace CharmCrab.Charms {
 					}
 				}
 				this.hit.Register(col.gameObject);
+			} else {
+				// This situation we've hit something else; Need to update damage values if possible.
+				// Function calls will check for validity of target before updating.
+				EnemyHealth.UpdateSpikeBallDamage(col.gameObject);
 			}
 		}
 
